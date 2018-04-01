@@ -19,9 +19,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsActivity"
-            android:label="@string/title_activity_create_character" />
-        <activity
             android:name=".CharacterDetailActivity"
             android:label="@string/title_activity_edit_character"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -29,10 +26,6 @@
             android:name=".CharacterActionsActivity"
             android:label="@string/title_activity_character_actions"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".SpecialAbilitiesActivity"
-            android:label="@string/title_activity_special_abilities"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

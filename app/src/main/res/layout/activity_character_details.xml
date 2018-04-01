@@ -4,8 +4,13 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.brentonedwards.dmassist.CharacterDetailActivity$PlaceholderFragment">
-
+    tools:context="com.brentonedwards.dmassist.CharacterDetailActivity">
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
     <TextView
         android:id="@+id/character_name"
         android:layout_width="wrap_content"
@@ -43,34 +48,74 @@
         app:layout_constraintTop_toBottomOf= "@+id/line1"
         android:layout_marginTop="20dp"
         android:textColor="#885D4B"
-        android:text = "Armor Class 18(natural armor)"
+        android:text = "Armor Class "
         app:layout_constraintLeft_toLeftOf="parent"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintTop_creator="1" />
-    <TextView
+
+        <TextView
+            android:id="@+id/armor_class_val"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf= "@+id/line1"
+            app:layout_constraintLeft_toRightOf="@+id/armor_class"
+            android:layout_marginTop="20dp"
+            android:textColor="#885D4B"
+            android:text = "Armor Class 18(natural armor)"
+            tools:layout_constraintLeft_creator="1"
+            tools:layout_constraintTop_creator="1" />
+
+        <TextView
         android:id="@+id/hit_points"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf= "@+id/armor_class"
         android:layout_marginTop="5dp"
         android:textColor="#885D4B"
-        android:text = "Hit Points 33(6d8 +6)"
+        android:text = "Hit Points "
         app:layout_constraintLeft_toLeftOf="parent"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintTop_creator="1" />
-    <TextView
+
+        <TextView
+            android:id="@+id/hit_points_val"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf= "@+id/armor_class_val"
+            android:layout_marginTop="5dp"
+            android:textColor="#885D4B"
+            android:text = " 33(6d8 +6)"
+            app:layout_constraintLeft_toRightOf="@id/hit_points"
+            tools:layout_constraintLeft_creator="1"
+            tools:layout_constraintTop_creator="1" />
+
+
+
+        <TextView
         android:id="@+id/speed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf= "@+id/hit_points"
         android:layout_marginTop="5dp"
         android:textColor="#885D4B"
-        android:text = "Speed 25ft"
+        android:text = "Speed "
         app:layout_constraintLeft_toLeftOf="parent"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintTop_creator="1" />
 
-    <View
+        <TextView
+            android:id="@+id/speed_val"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf= "@+id/hit_points_val"
+            android:layout_marginTop="5dp"
+            android:textColor="#885D4B"
+            android:text = "5 feet"
+            app:layout_constraintLeft_toRightOf="@id/speed"
+            tools:layout_constraintLeft_creator="1"
+            tools:layout_constraintTop_creator="1" />
+
+        <View
         android:id="@+id/line2"
         app:layout_constraintTop_toBottomOf="@+id/speed"
         android:layout_width="fill_parent"
@@ -352,32 +397,82 @@
         android:text = "1 (200 XP)"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintTop_creator="1" />
+        <View
+            android:id="@+id/line3"
+            app:layout_constraintTop_toBottomOf="@+id/challenge_rating_val"
+            android:layout_width="fill_parent"
+            android:layout_height="3dp"
+            android:background="#5b1c1c"/>
 
-    <View
-        android:id="@+id/line3"
-        app:layout_constraintTop_toBottomOf="@+id/challenge_rating"
-        android:layout_width="fill_parent"
-        android:layout_height="3dp"
-        android:background="#5b1c1c"/>
 
-
-    <Button
-        android:id="@+id/special_abilities_button"
-        app:layout_constraintTop_toBottomOf="@+id/challenge_rating"
+        <TextView
+        android:id="@+id/special_abilities"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10pt"
+        android:textStyle="bold"
+        android:textColor="#885D4B"
+        app:layout_constraintTop_toBottomOf= "@id/line3"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text = "Special Abilities"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_width="0dp"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintTop_creator="1" />
+    <TextView
+        android:id="@+id/special_abilities_val"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Actions"/>
-    <Button
-        android:id="@+id/actions_button"
-        app:layout_constraintTop_toBottomOf="@+id/challenge_rating_val"
-        app:layout_constraintLeft_toRightOf="@id/special_abilities_button"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_width="0dp"
+        android:textColor="#885D4B"
+        app:layout_constraintTop_toBottomOf= "@+id/special_abilities"
+        android:layout_marginTop="5dp"
+        app:layout_constraintLeft_toRightOf="parent"
+        android:text = "Ability 1"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintTop_creator="1" />
+
+        <View
+            android:id="@+id/line4"
+            app:layout_constraintTop_toBottomOf="@+id/special_abilities_val"
+            android:layout_width="fill_parent"
+            android:layout_height="3dp"
+            android:background="#5b1c1c"/>
+
+        <TextView
+        android:id="@+id/actions"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Special Abilities"/>
+        android:textSize="10pt"
+        android:textStyle="bold"
+        android:textColor="#885D4B"
+        app:layout_constraintTop_toBottomOf= "@id/line4"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text = "Actions"
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintTop_creator="1" />
+    <TextView
+        android:id="@+id/actions_val"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#885D4B"
+        app:layout_constraintTop_toBottomOf= "@+id/actions"
+        android:layout_marginTop="5dp"
+        app:layout_constraintLeft_toRightOf="parent"
+        android:text = "Action 1"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintTop_creator="1" />
 
 
+    </android.support.constraint.ConstraintLayout>
+
+
+
+
+
+
+
+
+</ScrollView>
 
 
 

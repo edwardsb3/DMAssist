@@ -59,7 +59,7 @@ public class CharacterListAdapter extends ArrayAdapter<CharacterData> implements
 
             case R.id.item_info:
 
-                Snackbar.make(v, "Release date " + characterData.getCharChallengeLevel(), Snackbar.LENGTH_LONG)
+                Snackbar.make(v, "Release date " + characterData.getChallengeRating(), Snackbar.LENGTH_LONG)
                         .setAction("No action", null).show();
 
                 break;
@@ -106,8 +106,9 @@ public class CharacterListAdapter extends ArrayAdapter<CharacterData> implements
 
 
         viewHolder.txtName.setText(characterData.getCharName());
-        viewHolder.txtType.setText(characterData.getCharType());
-        viewHolder.txtVersion.setText(characterData.getCharChallengeLevel());
+        viewHolder.txtType.setText(characterData.getType());
+
+        viewHolder.txtVersion.setText(String.valueOf(characterData.getChallengeRating()));
         viewHolder.info.setOnClickListener(this);
         viewHolder.info.setTag(position);
         // Return the completed view to render on screen
