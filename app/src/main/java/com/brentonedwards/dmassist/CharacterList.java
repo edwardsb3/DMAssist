@@ -11,7 +11,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 
 
@@ -28,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -47,14 +50,16 @@ public class CharacterList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         setContentView(R.layout.activity_main);
         View someView = findViewById(R.id.list);
         View root = someView.getRootView();
-        root.setBackgroundColor(Color.parseColor("#FDF1D9"));
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Class List");
-        toolbar.setBackgroundColor(Color.parseColor("#BC8338"));
-        setSupportActionBar(toolbar);
+        root.setBackgroundColor(getResources().getColor(R.color.colorBackground));
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        toolbar.setTitle("Class List");
+//        toolbar.setBackgroundColor(Color.parseColor("#BC8338"));
+//        setSupportActionBar(toolbar);
+        AutoCompleteTextView searchBar = (AutoCompleteTextView) findViewById(R.id.search_bar);
 
         try {
             AssetManager assetManager = getAssets();
@@ -72,7 +77,7 @@ public class CharacterList extends AppCompatActivity {
             characterData = new ArrayList<>();
 
         while(index<gsonArray.length ) {
-            System.out.println(gsonArray[index].getName()+ gsonArray[index].getSize()+ gsonArray[index].getType()+ gsonArray[index].getSubtype()+ gsonArray[index].getAlignment()+ gsonArray[index].getArmorClass()+ gsonArray[index].getHitPoints()+ gsonArray[index].getHitDice()+gsonArray[index].getSpeed()+ gsonArray[index].getStrength()+ gsonArray[index].getDexterity()+ gsonArray[index].getConstitution()+ gsonArray[index].getWisdom()+ gsonArray[index].getIntelligence()+ gsonArray[index].getWisdom()+ gsonArray[index].getDamageVulnerabilities()+ gsonArray[index].getDamageResistances()+ gsonArray[index].getDamageImmunities()+ gsonArray[index].getConditionImmunities()+ gsonArray[index].getSenses()+ gsonArray[index].getChallengeRating()+ gsonArray[index].getSpecialAbilities()+ gsonArray[index].getActions());
+  //          System.out.println(gsonArray[index].getName()+ gsonArray[index].getSize()+ gsonArray[index].getType()+ gsonArray[index].getSubtype()+ gsonArray[index].getAlignment()+ gsonArray[index].getArmorClass()+ gsonArray[index].getHitPoints()+ gsonArray[index].getHitDice()+gsonArray[index].getSpeed()+ gsonArray[index].getStrength()+ gsonArray[index].getDexterity()+ gsonArray[index].getConstitution()+ gsonArray[index].getWisdom()+ gsonArray[index].getIntelligence()+ gsonArray[index].getWisdom()+ gsonArray[index].getDamageVulnerabilities()+ gsonArray[index].getDamageResistances()+ gsonArray[index].getDamageImmunities()+ gsonArray[index].getConditionImmunities()+ gsonArray[index].getSenses()+ gsonArray[index].getChallengeRating()+ gsonArray[index].getSpecialAbilities()+ gsonArray[index].getActions());
             characterData.add(new CharacterData(gsonArray[index].getName(), gsonArray[index].getSize(), gsonArray[index].getType(), gsonArray[index].getSubtype(), gsonArray[index].getAlignment(), gsonArray[index].getArmorClass(), gsonArray[index].getHitPoints(), gsonArray[index].getHitDice(),gsonArray[index].getSpeed(), gsonArray[index].getStrength(), gsonArray[index].getDexterity(), gsonArray[index].getConstitution(), gsonArray[index].getWisdom(), gsonArray[index].getIntelligence(), gsonArray[index].getWisdom(), gsonArray[index].getDamageVulnerabilities(), gsonArray[index].getDamageResistances(), gsonArray[index].getDamageImmunities(), gsonArray[index].getConditionImmunities(), gsonArray[index].getSenses(), gsonArray[index].getChallengeRating(), gsonArray[index].getLanguages(), gsonArray[index].getSpecialAbilities(), gsonArray[index].getActions()));
             index++;
         }
@@ -90,8 +95,6 @@ public class CharacterList extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
-
         adapter= new CharacterListAdapter(characterData,getApplicationContext());
 
         listView.setAdapter(adapter);
@@ -103,8 +106,8 @@ public class CharacterList extends AppCompatActivity {
                 myIntent.putExtra("Value", position);
                 CharacterList.this.startActivity(myIntent);
                 CharacterData characterData = CharacterList.characterData.get(position);
-                Snackbar.make(view, characterData.getCharName()+" has been created.", Snackbar.LENGTH_LONG)
-                        .setAction("No action", null).show();
+//                Snackbar.make(view, characterData.getCharName()+" has been created.", Snackbar.LENGTH_LONG)
+//                        .setAction("No action", null).show();
             }
         });
 

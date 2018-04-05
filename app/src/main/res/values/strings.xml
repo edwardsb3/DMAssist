@@ -171,4 +171,6 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_character_actions">CharacterActionsActivity</string>
     <string name="title_activity_special_abilities">SpecialAbilitiesActivity</string>
+    <string name="title_activity_encounter">EncounterActivity</string>
+    <string name="title_activity_encounters">EncountersActivity</string>
 </resources>

@@ -1,19 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.brentonedwards.dmassist.MainActivity"
+    tools:context="com.brentonedwards.dmassist.CharacterList"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_main">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/focus_dummy"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_width="0px"
+        android:layout_height="0px"/>
 
-
+    <AutoCompleteTextView
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/focus_dummy"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:hint="Search for a monster"
+        android:maxLines="1"/>
     <ListView
         android:id="@+id/list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/search_bar"
 
         />
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

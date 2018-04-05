@@ -9,23 +9,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".CharacterDetailActivity"
+            android:label="CharacterDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".CharacterList"
-            android:label="@string/app_name"
+            android:label="CharacterList"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EncountersActivity"
+            android:label="@string/title_activity_encounters"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".CharacterDetailActivity"
-            android:label="@string/title_activity_edit_character"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".CharacterActionsActivity"
-            android:label="@string/title_activity_character_actions"
-            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

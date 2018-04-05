@@ -83,7 +83,6 @@ public class CharacterListAdapter extends ArrayAdapter<CharacterData> implements
 
         if (convertView == null) {
 
-
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.character_row_item, parent, false);

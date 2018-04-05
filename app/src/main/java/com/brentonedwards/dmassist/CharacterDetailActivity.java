@@ -1,5 +1,8 @@
 package com.brentonedwards.dmassist;
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +25,9 @@ import android.widget.TextView;
 
 import com.brentonedwards.dmassist.R;
 import com.brentonedwards.dmassist.adapter.CharacterListAdapter;
+import com.github.johnpersano.supertoasts.library.Style;
+import com.github.johnpersano.supertoasts.library.SuperActivityToast;
+import com.github.johnpersano.supertoasts.library.utils.PaletteUtils;
 
 public class CharacterDetailActivity extends AppCompatActivity {
 
@@ -40,7 +46,7 @@ public class CharacterDetailActivity extends AppCompatActivity {
         int width = displayMetrics.widthPixels;
         View someView = findViewById(R.id.challenge_rating_val);
         View rootView = someView.getRootView();
-        rootView.setBackgroundColor(Color.parseColor("#FDF1D9"));
+        rootView.setBackgroundColor(getResources().getColor(R.color.colorBackground));
 
 
          int itemSelected = getIntent().getIntExtra("Value", 0);
@@ -162,23 +168,26 @@ public class CharacterDetailActivity extends AppCompatActivity {
             if(index== CharacterList.characterData.get(itemSelected).actions.size()){actionText = actionTextBuilder.toString();}
         }
         index=0;
-
+        if(CharacterList.characterData.get(itemSelected).specialAbilities!=null){
         while(index < CharacterList.characterData.get(itemSelected).getSpecialAbilities().size()) {
-            if(index == 0) {
+
+            if (index == 0) {
                 abilityTextBuilder = new StringBuilder("Name: " + CharacterList.characterData.get(itemSelected).specialAbilities.get(index).getName() + "\n");
                 abilityTextBuilder.append("Attack Bonus: " + CharacterList.characterData.get(itemSelected).specialAbilities.get(index).getAttackBonus() + "\n" + "\n");
                 abilityTextBuilder.append("Description:\n" + CharacterList.characterData.get(itemSelected).specialAbilities.get(index).getDesc() + "\n");
-            }
-            else{
+            } else {
 
                 abilityTextBuilder.append("\n" + "\n" + "Name: " + CharacterList.characterData.get(itemSelected).specialAbilities.get(index).getName() + "\n");
                 abilityTextBuilder.append("Attack Bonus: " + CharacterList.characterData.get(itemSelected).specialAbilities.get(index).getAttackBonus() + "\n" + "\n");
-                abilityTextBuilder.append("Description:\n" + CharacterList.characterData.get(itemSelected).specialAbilities.get(index).getDesc()+"\n");
+                abilityTextBuilder.append("Description:\n" + CharacterList.characterData.get(itemSelected).specialAbilities.get(index).getDesc() + "\n");
 
             }
-            index++;
+         index++;
+        }
+
             if(index== CharacterList.characterData.get(itemSelected).getSpecialAbilities().size()){abilityText = abilityTextBuilder.toString();}
         }
+        else{abilityText= "None";}
 
         actionValTextView.setText(actionText);
 
