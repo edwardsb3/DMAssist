@@ -1,73 +1,120 @@
 package com.brentonedwards.dmassist;
 
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
+import android.widget.ListView;
 
-import android.widget.TextView;
+
+import com.brentonedwards.dmassist.adapter.EncounterListAdapter;
+import com.brentonedwards.dmassist.util.GsonParse;
+import com.google.gson.Gson;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.ArrayList;
 
 public class EncountersActivity extends AppCompatActivity {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+    EncounterCharacter newChar;
+    public static ArrayList<CharacterData> characterData = new ArrayList<CharacterData>();
+    public static ArrayList<EncounterCharacter> encounterCharacter = new ArrayList<EncounterCharacter>();
+    ListView listView;
+    private EncounterListAdapter adapter;
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-    private ViewPager mViewPager;
+    int index = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         setContentView(R.layout.activity_encounters2);
+        View someView = findViewById(R.id.encounter_list);
+        View root = someView.getRootView();
+        root.setBackgroundColor(getResources().getColor(R.color.colorBackground));
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        toolbar.setTitle("Class List");
+//        toolbar.setBackgroundColor(Color.parseColor("#BC8338"));
+//        setSupportActionBar(toolbar);
+        FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.fab);
+        AutoCompleteTextView searchBar = (AutoCompleteTextView) findViewById(R.id.search_bar);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        try {
+            AssetManager assetManager = getAssets();
+            InputStream ims = assetManager.open("5e-SRD-Monsters.json");
 
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-        View rootView = mViewPager.getRootView();
-        rootView.setBackgroundColor(getResources().getColor(R.color.colorBackground));
+            Gson gson = new Gson();
+            Reader reader = new InputStreamReader(ims);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+            GsonParse[] gsonArray = gson.fromJson(reader, GsonParse[].class);
+
+
+            listView = (ListView) findViewById(R.id.encounter_list);
+
+
+            encounterCharacter = new ArrayList<>();
+            while (index < gsonArray.length) {
+                characterData.add(new CharacterData(gsonArray[index].getName(), gsonArray[index].getSize(), gsonArray[index].getType(), gsonArray[index].getSubtype(), gsonArray[index].getAlignment(), gsonArray[index].getArmorClass(), gsonArray[index].getHitPoints(), gsonArray[index].getHitDice(), gsonArray[index].getSpeed(), gsonArray[index].getStrength(), gsonArray[index].getDexterity(), gsonArray[index].getConstitution(), gsonArray[index].getWisdom(), gsonArray[index].getIntelligence(), gsonArray[index].getWisdom(), gsonArray[index].getDamageVulnerabilities(), gsonArray[index].getDamageResistances(), gsonArray[index].getDamageImmunities(), gsonArray[index].getConditionImmunities(), gsonArray[index].getSenses(), gsonArray[index].getChallengeRating(), gsonArray[index].getLanguages(), gsonArray[index].getSpecialAbilities(), gsonArray[index].getActions()));
+                index++;
+            }
+
+//            Collections.sort(encounterCharacter, new Comparator<EncounterCharacter>() {
+//                @Override
+//                public int compare(EncounterCharacter encounterCharacter, EncounterCharacter t1) {
+//
+//                    return encounterCharacter.initiative.compareTo(t1.initiative);
+//                }
+//            });
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        encounterCharacter.add(new EncounterCharacter(1,"Bilmy", characterData.get(1)));
+
+
+        adapter = new EncounterListAdapter(encounterCharacter, getApplicationContext());
+
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent myIntent = new Intent(EncountersActivity.this, CharacterDetailActivity.class);
+                myIntent.putExtra("Value", position);
+                EncountersActivity.this.startActivity(myIntent);
+                EncounterCharacter encounterCharacter = EncountersActivity.encounterCharacter.get(position);
+//                Snackbar.make(view, encounterCharacter.getCharName()+" has been created.", Snackbar.LENGTH_LONG)
+//                        .setAction("No action", null).show();
+            }
+        });
+
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent myIntent = new Intent(EncountersActivity.this, CharacterList.class);
+                EncountersActivity.this.startActivity(myIntent);
+
             }
         });
 
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_encounters, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -86,62 +133,25 @@ public class EncountersActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-        public PlaceholderFragment() {
-        }
+        if(getIntent().hasExtra("index")) {
 
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
+            int newCharIndex = getIntent().getExtras().getInt("index");
+            adapter.add(new EncounterCharacter());
+            adapter.getItem(adapter.getCount()-1).setName(characterData.get(newCharIndex).charName);
+//            newChar.setIndex(newCharIndex);
+//            newChar.setCharacterSheet(characterData.get(newCharIndex));
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_encounters, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
-    }
+            getIntent().getExtras().remove("index");
+            index = 0;
+            while(index < encounterCharacter.size()) {
+                Log.d("myAlert", encounterCharacter.get(index).name);
+            index++;
+            }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
-        }
-
-        @Override
-        public int getCount() {
-            // Show 3 total pages.
-            return 3;
         }
     }
 }

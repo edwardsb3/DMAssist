@@ -55,34 +55,29 @@ public class CharacterList extends AppCompatActivity {
         View someView = findViewById(R.id.list);
         View root = someView.getRootView();
         root.setBackgroundColor(getResources().getColor(R.color.colorBackground));
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        toolbar.setTitle("Class List");
-//        toolbar.setBackgroundColor(Color.parseColor("#BC8338"));
-//        setSupportActionBar(toolbar);
         AutoCompleteTextView searchBar = (AutoCompleteTextView) findViewById(R.id.search_bar);
+//
+//        try {
+//            AssetManager assetManager = getAssets();
+//            InputStream ims = assetManager.open("5e-SRD-Monsters.json");
+//
+//            Gson gson = new Gson();
+//            Reader reader = new InputStreamReader(ims);
+//
+//            GsonParse[] gsonArray = gson.fromJson(reader, GsonParse[].class);
+//
+//
+           listView = (ListView) findViewById(R.id.list);
+//
+//
+//            characterData = new ArrayList<>();
+//
+//            while (index < gsonArray.length) {
+//                characterData.add(new CharacterData(gsonArray[index].getName(), gsonArray[index].getSize(), gsonArray[index].getType(), gsonArray[index].getSubtype(), gsonArray[index].getAlignment(), gsonArray[index].getArmorClass(), gsonArray[index].getHitPoints(), gsonArray[index].getHitDice(), gsonArray[index].getSpeed(), gsonArray[index].getStrength(), gsonArray[index].getDexterity(), gsonArray[index].getConstitution(), gsonArray[index].getWisdom(), gsonArray[index].getIntelligence(), gsonArray[index].getWisdom(), gsonArray[index].getDamageVulnerabilities(), gsonArray[index].getDamageResistances(), gsonArray[index].getDamageImmunities(), gsonArray[index].getConditionImmunities(), gsonArray[index].getSenses(), gsonArray[index].getChallengeRating(), gsonArray[index].getLanguages(), gsonArray[index].getSpecialAbilities(), gsonArray[index].getActions()));
+//                index++;
+//            }
 
-        try {
-            AssetManager assetManager = getAssets();
-            InputStream ims = assetManager.open("5e-SRD-Monsters.json");
-
-            Gson gson = new Gson();
-            Reader reader = new InputStreamReader(ims);
-
-            GsonParse [] gsonArray = gson.fromJson(reader, GsonParse[].class);
-
-
-            listView=(ListView)findViewById(R.id.list);
-
-
-            characterData = new ArrayList<>();
-
-        while(index<gsonArray.length ) {
-  //          System.out.println(gsonArray[index].getName()+ gsonArray[index].getSize()+ gsonArray[index].getType()+ gsonArray[index].getSubtype()+ gsonArray[index].getAlignment()+ gsonArray[index].getArmorClass()+ gsonArray[index].getHitPoints()+ gsonArray[index].getHitDice()+gsonArray[index].getSpeed()+ gsonArray[index].getStrength()+ gsonArray[index].getDexterity()+ gsonArray[index].getConstitution()+ gsonArray[index].getWisdom()+ gsonArray[index].getIntelligence()+ gsonArray[index].getWisdom()+ gsonArray[index].getDamageVulnerabilities()+ gsonArray[index].getDamageResistances()+ gsonArray[index].getDamageImmunities()+ gsonArray[index].getConditionImmunities()+ gsonArray[index].getSenses()+ gsonArray[index].getChallengeRating()+ gsonArray[index].getSpecialAbilities()+ gsonArray[index].getActions());
-            characterData.add(new CharacterData(gsonArray[index].getName(), gsonArray[index].getSize(), gsonArray[index].getType(), gsonArray[index].getSubtype(), gsonArray[index].getAlignment(), gsonArray[index].getArmorClass(), gsonArray[index].getHitPoints(), gsonArray[index].getHitDice(),gsonArray[index].getSpeed(), gsonArray[index].getStrength(), gsonArray[index].getDexterity(), gsonArray[index].getConstitution(), gsonArray[index].getWisdom(), gsonArray[index].getIntelligence(), gsonArray[index].getWisdom(), gsonArray[index].getDamageVulnerabilities(), gsonArray[index].getDamageResistances(), gsonArray[index].getDamageImmunities(), gsonArray[index].getConditionImmunities(), gsonArray[index].getSenses(), gsonArray[index].getChallengeRating(), gsonArray[index].getLanguages(), gsonArray[index].getSpecialAbilities(), gsonArray[index].getActions()));
-            index++;
-        }
-
-            Collections.sort(characterData, new Comparator<CharacterData>() {
+            Collections.sort(EncountersActivity.characterData, new Comparator<CharacterData>() {
                 @Override
                 public int compare(CharacterData characterData, CharacterData t1) {
 
@@ -90,12 +85,12 @@ public class CharacterList extends AppCompatActivity {
                 }
             });
 
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
-        }catch(IOException e) {
-            e.printStackTrace();
-        }
-
-        adapter= new CharacterListAdapter(characterData,getApplicationContext());
+        adapter = new CharacterListAdapter(EncountersActivity.characterData, getApplicationContext());
 
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -105,7 +100,7 @@ public class CharacterList extends AppCompatActivity {
                 Intent myIntent = new Intent(CharacterList.this, CharacterDetailActivity.class);
                 myIntent.putExtra("Value", position);
                 CharacterList.this.startActivity(myIntent);
-                CharacterData characterData = CharacterList.characterData.get(position);
+//                CharacterData characterData = CharacterList.characterData.get(position);
 //                Snackbar.make(view, characterData.getCharName()+" has been created.", Snackbar.LENGTH_LONG)
 //                        .setAction("No action", null).show();
             }
@@ -135,21 +130,7 @@ public class CharacterList extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+}
 
 
-
-
-
-//    private static Character addUser(final DMAssistantDatabase db, Character character) {
-//        db.characterDao().insertAll(character);
-//        return character;
-//    }
-//
-//    private static void populateWithTestData(DMAssistantDatabase db) {
-//        Character character = new Character();
-//        character.setName("Ajay");
-//        character.setAlignment("Saini");
-//        character.setHit_dice("25");
-//        addUser(db, character);
-    }
 
