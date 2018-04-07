@@ -206,8 +206,8 @@ index = 0;
         addButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent myIntent = new Intent(CharacterDetailActivity.this, EncountersActivity.class);
-                myIntent.putExtra("index", itemSelected);
-                CharacterDetailActivity.this.startActivity(myIntent);
+                myIntent.setFlags(myIntent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+
 
             }
         });

@@ -29,8 +29,9 @@ public class EncountersActivity extends AppCompatActivity {
 
     EncounterCharacter newChar;
     public static ArrayList<CharacterData> characterData = new ArrayList<CharacterData>();
-    public static ArrayList<EncounterCharacter> encounterCharacter = new ArrayList<EncounterCharacter>();
+    public static ArrayList<Integer> encounterCharacter;
     ListView listView;
+
     private EncounterListAdapter adapter;
 
     int index = 0;
@@ -38,36 +39,37 @@ public class EncountersActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        setContentView(R.layout.activity_encounters2);
-        View someView = findViewById(R.id.encounter_list);
-        View root = someView.getRootView();
-        root.setBackgroundColor(getResources().getColor(R.color.colorBackground));
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        toolbar.setTitle("Class List");
-//        toolbar.setBackgroundColor(Color.parseColor("#BC8338"));
-//        setSupportActionBar(toolbar);
-        FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.fab);
-        AutoCompleteTextView searchBar = (AutoCompleteTextView) findViewById(R.id.search_bar);
-
-        try {
-            AssetManager assetManager = getAssets();
-            InputStream ims = assetManager.open("5e-SRD-Monsters.json");
-
-            Gson gson = new Gson();
-            Reader reader = new InputStreamReader(ims);
-
-            GsonParse[] gsonArray = gson.fromJson(reader, GsonParse[].class);
+        Log.d("myAlert", "Called");
+        if(savedInstanceState==null) {
 
 
-            listView = (ListView) findViewById(R.id.encounter_list);
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+            setContentView(R.layout.activity_encounters2);
+            View someView = findViewById(R.id.encounter_list);
+            View root = someView.getRootView();
+            root.setBackgroundColor(getResources().getColor(R.color.colorBackground));
 
 
-            encounterCharacter = new ArrayList<>();
-            while (index < gsonArray.length) {
-                characterData.add(new CharacterData(gsonArray[index].getName(), gsonArray[index].getSize(), gsonArray[index].getType(), gsonArray[index].getSubtype(), gsonArray[index].getAlignment(), gsonArray[index].getArmorClass(), gsonArray[index].getHitPoints(), gsonArray[index].getHitDice(), gsonArray[index].getSpeed(), gsonArray[index].getStrength(), gsonArray[index].getDexterity(), gsonArray[index].getConstitution(), gsonArray[index].getWisdom(), gsonArray[index].getIntelligence(), gsonArray[index].getWisdom(), gsonArray[index].getDamageVulnerabilities(), gsonArray[index].getDamageResistances(), gsonArray[index].getDamageImmunities(), gsonArray[index].getConditionImmunities(), gsonArray[index].getSenses(), gsonArray[index].getChallengeRating(), gsonArray[index].getLanguages(), gsonArray[index].getSpecialAbilities(), gsonArray[index].getActions()));
-                index++;
-            }
+            FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.fab);
+            AutoCompleteTextView searchBar = (AutoCompleteTextView) findViewById(R.id.search_bar);
+
+            try {
+                AssetManager assetManager = getAssets();
+                InputStream ims = assetManager.open("5e-SRD-Monsters.json");
+
+                Gson gson = new Gson();
+                Reader reader = new InputStreamReader(ims);
+
+                GsonParse[] gsonArray = gson.fromJson(reader, GsonParse[].class);
+
+
+                listView = (ListView) findViewById(R.id.encounter_list);
+
+
+                while (index < gsonArray.length) {
+                    characterData.add(new CharacterData(gsonArray[index].getName(), gsonArray[index].getSize(), gsonArray[index].getType(), gsonArray[index].getSubtype(), gsonArray[index].getAlignment(), gsonArray[index].getArmorClass(), gsonArray[index].getHitPoints(), gsonArray[index].getHitDice(), gsonArray[index].getSpeed(), gsonArray[index].getStrength(), gsonArray[index].getDexterity(), gsonArray[index].getConstitution(), gsonArray[index].getWisdom(), gsonArray[index].getIntelligence(), gsonArray[index].getWisdom(), gsonArray[index].getDamageVulnerabilities(), gsonArray[index].getDamageResistances(), gsonArray[index].getDamageImmunities(), gsonArray[index].getConditionImmunities(), gsonArray[index].getSenses(), gsonArray[index].getChallengeRating(), gsonArray[index].getLanguages(), gsonArray[index].getSpecialAbilities(), gsonArray[index].getActions()));
+                    index++;
+                }
 
 //            Collections.sort(encounterCharacter, new Comparator<EncounterCharacter>() {
 //                @Override
@@ -78,37 +80,47 @@ public class EncountersActivity extends AppCompatActivity {
 //            });
 
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        encounterCharacter.add(new EncounterCharacter(1,"Bilmy", characterData.get(1)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            encounterCharacter = new ArrayList<Integer>();
+            encounterCharacter.add(1);
+//        encounterCharacter.add(new EncounterCharacter(1,"Bilmy", characterData.get(1)));
 
 
-        adapter = new EncounterListAdapter(encounterCharacter, getApplicationContext());
+            adapter = new EncounterListAdapter(encounterCharacter, getApplicationContext());
 
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            listView.setAdapter(adapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Intent myIntent = new Intent(EncountersActivity.this, CharacterDetailActivity.class);
-                myIntent.putExtra("Value", position);
-                EncountersActivity.this.startActivity(myIntent);
-                EncounterCharacter encounterCharacter = EncountersActivity.encounterCharacter.get(position);
+                    Intent myIntent = new Intent(EncountersActivity.this, CharacterDetailActivity.class);
+                    myIntent.putExtra("Value", position);
+                    EncountersActivity.this.startActivity(myIntent);
+//                EncounterCharacter encounterCharacter = EncountersActivity.encounterCharacter.get(position);
 //                Snackbar.make(view, encounterCharacter.getCharName()+" has been created.", Snackbar.LENGTH_LONG)
 //                        .setAction("No action", null).show();
-            }
-        });
+                }
+            });
 
 
-        addButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent myIntent = new Intent(EncountersActivity.this, CharacterList.class);
-                EncountersActivity.this.startActivity(myIntent);
+            addButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
 
-            }
-        });
+                    adapter.add(1);
 
+                    //                Intent myIntent = new Intent(EncountersActivity.this, CharacterList.class);
+//                EncountersActivity.this.startActivity(myIntent);
+
+                }
+            });
+        }
+
+        else {
+            savedInstanceState.getIntegerArrayList("encounterCharacter");
+
+        }
     }
 
     @Override
@@ -137,21 +149,34 @@ public class EncountersActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if(getIntent().hasExtra("index")) {
 
-            int newCharIndex = getIntent().getExtras().getInt("index");
-            adapter.add(new EncounterCharacter());
-            adapter.getItem(adapter.getCount()-1).setName(characterData.get(newCharIndex).charName);
-//            newChar.setIndex(newCharIndex);
-//            newChar.setCharacterSheet(characterData.get(newCharIndex));
+//        if(getIntent().hasExtra("index")) {
 
-            getIntent().getExtras().remove("index");
-            index = 0;
-            while(index < encounterCharacter.size()) {
-                Log.d("myAlert", encounterCharacter.get(index).name);
-            index++;
+//            int newCharIndex = getIntent().getExtras().getInt("index");
+//
+//            adapter = null;
+//            encounterCharacter.add(1);
+//            adapter = new EncounterListAdapter(encounterCharacter, getApplicationContext());
+//            listView.setAdapter(adapter);
+//            adapter.notifyDataSetChanged();
+//
+//
+//
+////            encounterCharacter.add(new Integer(getIntent().getExtras().getInt("index")));
+//            Log.d("myAlert", String.valueOf(encounterCharacter.size()));
+//
+//
+//
+//
+//            //            newChar.setIndex(newCharIndex);
+////            newChar.setCharacterSheet(characterData.get(newCharIndex));
+//
+//            getIntent().getExtras().remove("index");
+////            index = 0;
+////            while(index < encounterCharacter.size()) {
+////                Log.d("myAlert", encounterCharacter.get(newCharIndex).name);
+//            index++;
             }
 
         }
-    }
-}
+

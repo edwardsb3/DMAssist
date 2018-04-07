@@ -24,9 +24,9 @@ import java.util.ArrayList;
 /**
  * Created by Brenton Edwards on 03/20/2018.
  */
-public class EncounterListAdapter extends ArrayAdapter<EncounterCharacter> implements View.OnClickListener{
+public class EncounterListAdapter extends ArrayAdapter<Integer> implements View.OnClickListener{
 
-    private ArrayList<EncounterCharacter> dataSet;
+    private ArrayList<Integer> dataSet;
     Context mContext;
 
 
@@ -41,7 +41,7 @@ public class EncounterListAdapter extends ArrayAdapter<EncounterCharacter> imple
 
 
 
-    public EncounterListAdapter(ArrayList<EncounterCharacter> data, Context context) {
+    public EncounterListAdapter(ArrayList<Integer> data, Context context) {
         super(context, R.layout.encounter_row_item, data);
         this.dataSet = data;
         this.mContext=context;
@@ -54,8 +54,8 @@ public class EncounterListAdapter extends ArrayAdapter<EncounterCharacter> imple
 
 
         int position=(Integer) v.getTag();
-        Object object= getItem(position);
-        EncounterCharacter encounterCharacter =(EncounterCharacter) object;
+        int index= getItem(position);
+        int encounterCharacterIndex = index;
 
 
 
@@ -81,7 +81,7 @@ public class EncounterListAdapter extends ArrayAdapter<EncounterCharacter> imple
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        EncounterCharacter encounterCharacter = getItem(position);
+        int encounterCharacterIndex = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
 
@@ -111,7 +111,7 @@ public class EncounterListAdapter extends ArrayAdapter<EncounterCharacter> imple
         lastPosition = position;
 
 
-        viewHolder.nameTextView.setText(encounterCharacter.getName());
+        viewHolder.nameTextView.setText(EncountersActivity.characterData.get(encounterCharacterIndex).getCharName());
 //        viewHolder.armorClassTextView.setText(String.valueOf(encounterCharacter.getCharacterSheet().getArmorClass()));
 //
 //        viewHolder.hitPointsTextView.setText(String.valueOf(encounterCharacter.getCharacterSheet().getHitPoints()));
