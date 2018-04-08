@@ -1,5 +1,6 @@
 package com.brentonedwards.dmassist;
 
+import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
@@ -16,6 +17,9 @@ import android.widget.ListView;
 
 
 import com.brentonedwards.dmassist.adapter.EncounterListAdapter;
+import com.brentonedwards.dmassist.database.CharacterDao;
+import com.brentonedwards.dmassist.database.CharacterDatabase;
+import com.brentonedwards.dmassist.database.EncounterCharacterEntity;
 import com.brentonedwards.dmassist.util.GsonParse;
 import com.google.gson.Gson;
 
@@ -49,9 +53,13 @@ public class EncountersActivity extends AppCompatActivity {
             View root = someView.getRootView();
             root.setBackgroundColor(getResources().getColor(R.color.colorBackground));
 
-
             FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.fab);
             AutoCompleteTextView searchBar = (AutoCompleteTextView) findViewById(R.id.search_bar);
+
+            CharacterDatabase db = Room.databaseBuilder(getApplicationContext(),
+                    CharacterDatabase.class, "character-database").build();
+
+        db.characterDao().insertAll(new EncounterCharacterEntity("Brenton", "Edwards", 25));
 
             try {
                 AssetManager assetManager = getAssets();
@@ -107,6 +115,7 @@ public class EncountersActivity extends AppCompatActivity {
 
             addButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
+
 
                     adapter.add(1);
 
