@@ -19,14 +19,15 @@ import com.brentonedwards.dmassist.R;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * Created by Brenton Edwards on 03/20/2018.
  */
-public class EncounterListAdapter extends ArrayAdapter<Integer> implements View.OnClickListener{
+public class EncounterListAdapter extends ArrayAdapter<EncounterCharacter> implements View.OnClickListener{
 
-    private ArrayList<Integer> dataSet;
+    private List<EncounterCharacter> dataSet;
     Context mContext;
 
 
@@ -35,13 +36,11 @@ public class EncounterListAdapter extends ArrayAdapter<Integer> implements View.
         TextView nameTextView;
         TextView armorClassTextView;
         TextView hitPointsTextView;
-        TextView passivePerceptionTextView;
-        TextView inspiration;
     }
 
 
 
-    public EncounterListAdapter(ArrayList<Integer> data, Context context) {
+    public EncounterListAdapter(List<EncounterCharacter> data, Context context) {
         super(context, R.layout.encounter_row_item, data);
         this.dataSet = data;
         this.mContext=context;
@@ -54,8 +53,8 @@ public class EncounterListAdapter extends ArrayAdapter<Integer> implements View.
 
 
         int position=(Integer) v.getTag();
-        int index= getItem(position);
-        int encounterCharacterIndex = index;
+        EncounterCharacter index= getItem(position);
+ //       int encounterCharacterIndex = index;
 
 
 
@@ -81,7 +80,7 @@ public class EncounterListAdapter extends ArrayAdapter<Integer> implements View.
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        int encounterCharacterIndex = getItem(position);
+        EncounterCharacter encounterCharacterIndex = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
 
@@ -95,8 +94,6 @@ public class EncounterListAdapter extends ArrayAdapter<Integer> implements View.
             viewHolder.nameTextView = (TextView) convertView.findViewById(R.id.name);
             viewHolder.armorClassTextView = (TextView) convertView.findViewById(R.id.armor_class);
             viewHolder.hitPointsTextView = (TextView) convertView.findViewById(R.id.hit_points);
-            viewHolder.passivePerceptionTextView = (TextView) convertView.findViewById(R.id.passive_perception);
-            viewHolder.inspiration = (TextView) convertView.findViewById(R.id.inspiration);
 
             result=convertView;
 
@@ -111,12 +108,10 @@ public class EncounterListAdapter extends ArrayAdapter<Integer> implements View.
         lastPosition = position;
 
 
-        viewHolder.nameTextView.setText(EncountersActivity.characterData.get(encounterCharacterIndex).getCharName());
-//        viewHolder.armorClassTextView.setText(String.valueOf(encounterCharacter.getCharacterSheet().getArmorClass()));
-//
-//        viewHolder.hitPointsTextView.setText(String.valueOf(encounterCharacter.getCharacterSheet().getHitPoints()));
-//        viewHolder.passivePerceptionTextView.setText(String.valueOf(encounterCharacter.getCharacterSheet().getSenses()));
-//        viewHolder.inspiration.setText("Inspired");
+        viewHolder.nameTextView.setText(encounterCharacterIndex.getName());
+        viewHolder.armorClassTextView.setText(String.valueOf(EncountersActivity.characterData.get(encounterCharacterIndex.getCharacterSheet()).getArmorClass()));
+        viewHolder.hitPointsTextView.setText(String.valueOf(EncountersActivity.characterData.get(encounterCharacterIndex.getCharacterSheet()).getHitPoints()));
+
         // Return the completed view to render on screen
         return convertView;
     }

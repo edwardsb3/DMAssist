@@ -1,9 +1,11 @@
-package com.brentonedwards.dmassist.database;
+package com.brentonedwards.dmassist;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+
+import com.brentonedwards.dmassist.EncounterCharacterEntity;
 
 import java.util.List;
 
@@ -14,7 +16,7 @@ import java.util.List;
 public interface CharacterDao {
 
     @Query("SELECT * FROM character")
-    List<EncounterCharacterEntity> getAll();
+    List<EncounterCharacter> getAll();
 
 //    @Query("SELECT * FROM character where name LIKE  :name AND alignment LIKE :alignment")
 //    Character findByName(String name, String alignment);
@@ -24,6 +26,9 @@ public interface CharacterDao {
 
     @Insert
     void insertAll(EncounterCharacterEntity... characters);
+
+    @Insert
+    void insertAll(EncounterCharacter... characters);
 
     @Delete
     void delete(EncounterCharacterEntity character);

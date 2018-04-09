@@ -1,31 +1,54 @@
 package com.brentonedwards.dmassist;
 
-import android.support.annotation.NonNull;
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 
+@Entity(tableName = "character")
 public class EncounterCharacter {
 
+    @PrimaryKey(autoGenerate = true)
     int index;
-    String name;
-    CharacterData characterSheet;
-    int initiative;
-    boolean blinded;
-    boolean charmed;
-    boolean deafened;
-    boolean frightened;
-    boolean grappled;
-    boolean incapacitated;
-    boolean notVisable;
-    boolean paralyzed;
-    boolean petrified;
-    boolean poisoned;
-    boolean restrained;
-    boolean stunned;
 
+    @ColumnInfo(name = "name")
+    String name;
+
+    @ColumnInfo(name = "character_sheet_index")
+    int characterSheetIndex;
+
+    @ColumnInfo(name = "initiative")
+    int initiative;
+    @ColumnInfo(name = "blinded")
+    boolean blinded;
+    @ColumnInfo(name = "charmed")
+    boolean charmed;
+    @ColumnInfo(name = "deafened")
+    boolean deafened;
+    @ColumnInfo(name = "frightened")
+    boolean frightened;
+    @ColumnInfo(name = "grappled")
+    boolean grappled;
+    @ColumnInfo(name = "incapacitated")
+    boolean incapacitated;
+    @ColumnInfo(name = "not_visable")
+    boolean notVisable;
+    @ColumnInfo(name = "paralyzed")
+    boolean paralyzed;
+    @ColumnInfo(name = "petrified")
+    boolean petrified;
+    @ColumnInfo(name = "poisoned")
+    boolean poisoned;
+    @ColumnInfo(name = "restrained")
+    boolean restrained;
+    @ColumnInfo(name = "stunned")
+    boolean stunned;
+    @Ignore
     public EncounterCharacter() {
 
         this.index = 0;
         this.name = "Bilmy";
-        this.characterSheet = EncountersActivity.characterData.get(0);
+        this.characterSheetIndex = 0;
         this.initiative =0;
         this.blinded = false;
         this.charmed = false;
@@ -41,10 +64,10 @@ public class EncounterCharacter {
         this.stunned = false;
     }
 
-    public EncounterCharacter(int index, String name, CharacterData characterSheet) {
-        this.index = index;
+    public EncounterCharacter(String name, int characterSheetIndex) {
+
         this.name = name;
-        this.characterSheet = characterSheet;
+        this.characterSheetIndex = characterSheetIndex;
         this.initiative =0;
         this.blinded = false;
         this.charmed = false;
@@ -82,12 +105,12 @@ public class EncounterCharacter {
         this.name = name;
     }
 
-    public CharacterData getCharacterSheet() {
-        return characterSheet;
+    public int getCharacterSheet() {
+        return characterSheetIndex;
     }
 
-    public void setCharacterSheet(CharacterData characterSheet) {
-        this.characterSheet = characterSheet;
+    public void setCharacterSheet(int characterSheetIndex) {
+        this.characterSheetIndex = characterSheetIndex;
     }
 
     public int getInitiative() {

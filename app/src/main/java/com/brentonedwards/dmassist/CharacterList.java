@@ -39,8 +39,6 @@ import java.util.HashMap;
 public class CharacterList extends AppCompatActivity {
 
 
-    public static ArrayList<CharacterData> characterData;
-    public static CharacterData itemSelected;
     ListView listView;
     private static CharacterListAdapter adapter;
 
@@ -55,27 +53,8 @@ public class CharacterList extends AppCompatActivity {
         View someView = findViewById(R.id.list);
         View root = someView.getRootView();
         root.setBackgroundColor(getResources().getColor(R.color.colorBackground));
-        AutoCompleteTextView searchBar = (AutoCompleteTextView) findViewById(R.id.search_bar);
-//
-//        try {
-//            AssetManager assetManager = getAssets();
-//            InputStream ims = assetManager.open("5e-SRD-Monsters.json");
-//
-//            Gson gson = new Gson();
-//            Reader reader = new InputStreamReader(ims);
-//
-//            GsonParse[] gsonArray = gson.fromJson(reader, GsonParse[].class);
-//
-//
+
            listView = (ListView) findViewById(R.id.list);
-//
-//
-//            characterData = new ArrayList<>();
-//
-//            while (index < gsonArray.length) {
-//                characterData.add(new CharacterData(gsonArray[index].getName(), gsonArray[index].getSize(), gsonArray[index].getType(), gsonArray[index].getSubtype(), gsonArray[index].getAlignment(), gsonArray[index].getArmorClass(), gsonArray[index].getHitPoints(), gsonArray[index].getHitDice(), gsonArray[index].getSpeed(), gsonArray[index].getStrength(), gsonArray[index].getDexterity(), gsonArray[index].getConstitution(), gsonArray[index].getWisdom(), gsonArray[index].getIntelligence(), gsonArray[index].getWisdom(), gsonArray[index].getDamageVulnerabilities(), gsonArray[index].getDamageResistances(), gsonArray[index].getDamageImmunities(), gsonArray[index].getConditionImmunities(), gsonArray[index].getSenses(), gsonArray[index].getChallengeRating(), gsonArray[index].getLanguages(), gsonArray[index].getSpecialAbilities(), gsonArray[index].getActions()));
-//                index++;
-//            }
 
             Collections.sort(EncountersActivity.characterData, new Comparator<CharacterData>() {
                 @Override
@@ -84,11 +63,6 @@ public class CharacterList extends AppCompatActivity {
                     return characterData.charName.compareTo(t1.charName);
                 }
             });
-
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
         adapter = new CharacterListAdapter(EncountersActivity.characterData, getApplicationContext());
 
@@ -100,9 +74,6 @@ public class CharacterList extends AppCompatActivity {
                 Intent myIntent = new Intent(CharacterList.this, CharacterDetailActivity.class);
                 myIntent.putExtra("Value", position);
                 CharacterList.this.startActivity(myIntent);
-//                CharacterData characterData = CharacterList.characterData.get(position);
-//                Snackbar.make(view, characterData.getCharName()+" has been created.", Snackbar.LENGTH_LONG)
-//                        .setAction("No action", null).show();
             }
         });
 
@@ -118,12 +89,8 @@ public class CharacterList extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }

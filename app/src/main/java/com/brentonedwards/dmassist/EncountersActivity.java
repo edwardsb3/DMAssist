@@ -17,9 +17,6 @@ import android.widget.ListView;
 
 
 import com.brentonedwards.dmassist.adapter.EncounterListAdapter;
-import com.brentonedwards.dmassist.database.CharacterDao;
-import com.brentonedwards.dmassist.database.CharacterDatabase;
-import com.brentonedwards.dmassist.database.EncounterCharacterEntity;
 import com.brentonedwards.dmassist.util.GsonParse;
 import com.google.gson.Gson;
 
@@ -33,8 +30,9 @@ public class EncountersActivity extends AppCompatActivity {
 
     EncounterCharacter newChar;
     public static ArrayList<CharacterData> characterData = new ArrayList<CharacterData>();
-    public static ArrayList<Integer> encounterCharacter;
+    public static ArrayList<EncounterCharacter> encounterCharacter;
     ListView listView;
+    public static CharacterDatabase db;
 
     private EncounterListAdapter adapter;
 
@@ -44,6 +42,9 @@ public class EncountersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("myAlert", "Called");
+
+        db = Room.databaseBuilder(getApplicationContext(),
+                CharacterDatabase.class, "character-database").allowMainThreadQueries().build();
         if(savedInstanceState==null) {
 
 
@@ -56,10 +57,9 @@ public class EncountersActivity extends AppCompatActivity {
             FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.fab);
             AutoCompleteTextView searchBar = (AutoCompleteTextView) findViewById(R.id.search_bar);
 
-            CharacterDatabase db = Room.databaseBuilder(getApplicationContext(),
-                    CharacterDatabase.class, "character-database").build();
 
-        db.characterDao().insertAll(new EncounterCharacterEntity("Brenton", "Edwards", 25));
+        int charNum = db.characterDao().countCharacters();
+        Log.d("myAlert", String.valueOf(charNum));
 
             try {
                 AssetManager assetManager = getAssets();
@@ -91,12 +91,12 @@ public class EncountersActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            encounterCharacter = new ArrayList<Integer>();
-            encounterCharacter.add(1);
+            encounterCharacter = new ArrayList<EncounterCharacter>();
+
 //        encounterCharacter.add(new EncounterCharacter(1,"Bilmy", characterData.get(1)));
+//            db.characterDao().insertAll(new EncounterCharacter(), new EncounterCharacter(), new EncounterCharacter());
 
-
-            adapter = new EncounterListAdapter(encounterCharacter, getApplicationContext());
+            adapter = new EncounterListAdapter(db.characterDao().getAll(), getApplicationContext());
 
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -117,10 +117,9 @@ public class EncountersActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-                    adapter.add(1);
 
-                    //                Intent myIntent = new Intent(EncountersActivity.this, CharacterList.class);
-//                EncountersActivity.this.startActivity(myIntent);
+            Intent myIntent = new Intent(EncountersActivity.this, CharacterList.class);
+            EncountersActivity.this.startActivity(myIntent);
 
                 }
             });
@@ -157,34 +156,14 @@ public class EncountersActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if(getIntent().hasExtra("index")) {
+            int newCharReferenceIndex = getIntent().getIntExtra("index", 0);
+            db.characterDao().insertAll(new EncounterCharacter(characterData.get(newCharReferenceIndex).charName, newCharReferenceIndex));
+            adapter = null;
+            adapter = new EncounterListAdapter(db.characterDao().getAll(), this);
+            listView.setAdapter(adapter);
+        }
 
-
-//        if(getIntent().hasExtra("index")) {
-
-//            int newCharIndex = getIntent().getExtras().getInt("index");
-//
-//            adapter = null;
-//            encounterCharacter.add(1);
-//            adapter = new EncounterListAdapter(encounterCharacter, getApplicationContext());
-//            listView.setAdapter(adapter);
-//            adapter.notifyDataSetChanged();
-//
-//
-//
-////            encounterCharacter.add(new Integer(getIntent().getExtras().getInt("index")));
-//            Log.d("myAlert", String.valueOf(encounterCharacter.size()));
-//
-//
-//
-//
-//            //            newChar.setIndex(newCharIndex);
-////            newChar.setCharacterSheet(characterData.get(newCharIndex));
-//
-//            getIntent().getExtras().remove("index");
-////            index = 0;
-////            while(index < encounterCharacter.size()) {
-////                Log.d("myAlert", encounterCharacter.get(newCharIndex).name);
-//            index++;
             }
 
         }

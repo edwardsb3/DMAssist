@@ -7,13 +7,13 @@
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:text="Tartuga"
         app:layout_constraintLeft_toLeftOf="parent"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@android:color/darker_gray" />
+        android:textColor="@android:color/black" />
 
 
     <TextView
@@ -24,8 +24,9 @@
         app:layout_constraintLeft_toRightOf="@id/name"
         android:layout_marginTop="5dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="11"
-        android:textColor="@android:color/black" />
+        android:layout_marginLeft="50dp"
+        android:text="00"
+        android:textColor="@android:color/darker_gray" />
 
     <TextView
         android:id="@+id/hit_points"
@@ -33,29 +34,23 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toRightOf="@id/armor_class"
         android:layout_marginTop="5dp"
-        android:text="11"
-        android:textColor="@android:color/black" />
+        android:layout_marginLeft="50dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="00"
+        android:textColor="@android:color/holo_red_dark" />
 
     <TextView
-        android:id="@+id/passive_perception"
+        android:id="@+id/initiative"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toRightOf="@id/hit_points"
         android:layout_marginTop="5dp"
-        android:text="11"
-        android:textColor="@android:color/black" />
+        android:layout_marginLeft="50dp"
+        app:layout_constraintRight_toRightOf="parent"
 
-
-    <TextView
-        android:id="@+id/inspiration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@id/passive_perception"
-        android:layout_marginTop="5dp"
-        android:text="11"
-        android:textColor="@android:color/black" />
-
-
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="20"
+        android:textColor="@android:color/holo_blue_bright" />
 
 
 

@@ -1,4 +1,4 @@
-package com.brentonedwards.dmassist.database;
+package com.brentonedwards.dmassist;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
@@ -6,7 +6,7 @@ import android.arch.persistence.room.PrimaryKey;
 
 import java.io.Serializable;
 
-@Entity(tableName = "character")
+@Entity(tableName = "nope")
     class EncounterCharacterEntity  {
 
     public EncounterCharacterEntity(String firstName, String lastName, int age) {

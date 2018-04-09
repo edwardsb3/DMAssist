@@ -1,13 +1,13 @@
-package com.brentonedwards.dmassist.database;
+package com.brentonedwards.dmassist;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-import com.brentonedwards.dmassist.database.EncounterCharacterEntity;
+import com.brentonedwards.dmassist.EncounterCharacterEntity;
 
-@Database(entities = {EncounterCharacterEntity.class}, version = 1)
+@Database(entities = {EncounterCharacterEntity.class, EncounterCharacter.class}, version = 1)
 public abstract class CharacterDatabase extends RoomDatabase {
 
         private static CharacterDatabase INSTANCE;
