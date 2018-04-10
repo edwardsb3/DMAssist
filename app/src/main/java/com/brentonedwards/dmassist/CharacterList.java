@@ -8,13 +8,17 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 
 import com.brentonedwards.dmassist.adapter.CharacterListAdapter;
@@ -38,8 +42,10 @@ import java.util.HashMap;
 
 public class CharacterList extends AppCompatActivity {
 
-
+    EditText searchBar;
     ListView listView;
+    View root;
+    ArrayList<EncounterCharacter> searchResult = new ArrayList<>();
     private static CharacterListAdapter adapter;
 
     View mainScreen;
@@ -51,10 +57,24 @@ public class CharacterList extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         setContentView(R.layout.activity_main);
         View someView = findViewById(R.id.list);
-        View root = someView.getRootView();
+        root = someView.getRootView();
         root.setBackgroundColor(getResources().getColor(R.color.colorBackground));
-
+        searchBar = findViewById(R.id.search_bar);
            listView = (ListView) findViewById(R.id.list);
+
+
+        searchBar.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    //do what you want on the press of 'done'
+                    searchResult.add(EncountersActivity.db.characterDao().findByName(String.valueOf(searchBar.getText())));
+                    adapter = null;
+//                    listView.setAdapter(new CharacterListAdapter(searchResult, root.getContext()));
+                }
+                return false;
+            }
+        });
+
 
             Collections.sort(EncountersActivity.characterData, new Comparator<CharacterData>() {
                 @Override

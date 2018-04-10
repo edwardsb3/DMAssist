@@ -15,14 +15,17 @@
         android:layout_width="0px"
         android:layout_height="0px"/>
 
-    <AutoCompleteTextView
+    <EditText
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/focus_dummy"
         app:layout_constraintLeft_toLeftOf="parent"
         android:hint="Search for a monster"
-        android:maxLines="1"/>
+        android:imeOptions="actionDone"
+        android:maxLines="1"
+        android:inputType="text"
+        />
     <ListView
         android:id="@+id/list"
         android:layout_width="wrap_content"

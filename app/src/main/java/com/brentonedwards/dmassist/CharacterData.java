@@ -1,5 +1,7 @@
 package com.brentonedwards.dmassist;
 
+import android.arch.persistence.room.Entity;
+
 import com.brentonedwards.dmassist.util.Action;
 import com.brentonedwards.dmassist.util.SpecialAbility;
 

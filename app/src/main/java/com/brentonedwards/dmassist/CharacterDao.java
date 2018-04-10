@@ -18,8 +18,8 @@ public interface CharacterDao {
     @Query("SELECT * FROM character")
     List<EncounterCharacter> getAll();
 
-//    @Query("SELECT * FROM character where name LIKE  :name AND alignment LIKE :alignment")
-//    Character findByName(String name, String alignment);
+    @Query("SELECT * FROM character where name = :name")
+    EncounterCharacter findByName(String name);
 
     @Query("SELECT COUNT(*) from character")
     int countCharacters();
