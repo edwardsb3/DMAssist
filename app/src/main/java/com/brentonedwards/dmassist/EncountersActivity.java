@@ -55,7 +55,6 @@ public class EncountersActivity extends AppCompatActivity {
             root.setBackgroundColor(getResources().getColor(R.color.colorBackground));
 
             FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.fab);
-            AutoCompleteTextView searchBar = (AutoCompleteTextView) findViewById(R.id.search_bar);
 
 
         int charNum = db.characterDao().countCharacters();
@@ -75,10 +74,11 @@ public class EncountersActivity extends AppCompatActivity {
 
 
                 while (index < gsonArray.length) {
-                    characterData.add(new CharacterData(gsonArray[index].getName(), gsonArray[index].getSize(), gsonArray[index].getType(), gsonArray[index].getSubtype(), gsonArray[index].getAlignment(), gsonArray[index].getArmorClass(), gsonArray[index].getHitPoints(), gsonArray[index].getHitDice(), gsonArray[index].getSpeed(), gsonArray[index].getStrength(), gsonArray[index].getDexterity(), gsonArray[index].getConstitution(), gsonArray[index].getWisdom(), gsonArray[index].getIntelligence(), gsonArray[index].getWisdom(), gsonArray[index].getDamageVulnerabilities(), gsonArray[index].getDamageResistances(), gsonArray[index].getDamageImmunities(), gsonArray[index].getConditionImmunities(), gsonArray[index].getSenses(), gsonArray[index].getChallengeRating(), gsonArray[index].getLanguages(), gsonArray[index].getSpecialAbilities(), gsonArray[index].getActions()));
+                    db.characterDao().insertAll(new CharacterData(gsonArray[index].getName(), gsonArray[index].getSize(), gsonArray[index].getType(), gsonArray[index].getSubtype(), gsonArray[index].getAlignment(), gsonArray[index].getArmorClass(), gsonArray[index].getHitPoints(), gsonArray[index].getHitDice(), gsonArray[index].getSpeed(), gsonArray[index].getStrength(), gsonArray[index].getDexterity(), gsonArray[index].getConstitution(), gsonArray[index].getWisdom(), gsonArray[index].getIntelligence(), gsonArray[index].getWisdom(), gsonArray[index].getDamageVulnerabilities(), gsonArray[index].getDamageResistances(), gsonArray[index].getDamageImmunities(), gsonArray[index].getConditionImmunities(), gsonArray[index].getSenses(), gsonArray[index].getChallengeRating(), gsonArray[index].getLanguages(), gsonArray[index].getSpecialAbilities(), gsonArray[index].getActions()));
+//                    characterData.add(new CharacterData(gsonArray[index].getName(), gsonArray[index].getSize(), gsonArray[index].getType(), gsonArray[index].getSubtype(), gsonArray[index].getAlignment(), gsonArray[index].getArmorClass(), gsonArray[index].getHitPoints(), gsonArray[index].getHitDice(), gsonArray[index].getSpeed(), gsonArray[index].getStrength(), gsonArray[index].getDexterity(), gsonArray[index].getConstitution(), gsonArray[index].getWisdom(), gsonArray[index].getIntelligence(), gsonArray[index].getWisdom(), gsonArray[index].getDamageVulnerabilities(), gsonArray[index].getDamageResistances(), gsonArray[index].getDamageImmunities(), gsonArray[index].getConditionImmunities(), gsonArray[index].getSenses(), gsonArray[index].getChallengeRating(), gsonArray[index].getLanguages(), gsonArray[index].getSpecialAbilities(), gsonArray[index].getActions()));
                     index++;
                 }
-
+                Log.d("myAlert", String.valueOf(db.characterDao().countCharacterData()));
 //            Collections.sort(encounterCharacter, new Comparator<EncounterCharacter>() {
 //                @Override
 //                public int compare(EncounterCharacter encounterCharacter, EncounterCharacter t1) {
@@ -96,7 +96,7 @@ public class EncountersActivity extends AppCompatActivity {
 //        encounterCharacter.add(new EncounterCharacter(1,"Bilmy", characterData.get(1)));
 //            db.characterDao().insertAll(new EncounterCharacter(), new EncounterCharacter(), new EncounterCharacter());
 
-            adapter = new EncounterListAdapter(db.characterDao().getAll(), getApplicationContext());
+            adapter = new EncounterListAdapter(db.characterDao().getAllEncounterCharacters(), getApplicationContext());
 
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -158,9 +158,9 @@ public class EncountersActivity extends AppCompatActivity {
         super.onResume();
         if(getIntent().hasExtra("index")) {
             int newCharReferenceIndex = getIntent().getIntExtra("index", 0);
-            db.characterDao().insertAll(new EncounterCharacter(characterData.get(newCharReferenceIndex).charName, newCharReferenceIndex));
+            db.characterDao().insertAll(new EncounterCharacter(db.characterDao().findByUid(newCharReferenceIndex).charName, newCharReferenceIndex));
             adapter = null;
-            adapter = new EncounterListAdapter(db.characterDao().getAll(), this);
+            adapter = new EncounterListAdapter(db.characterDao().getAllEncounterCharacters(), this);
             listView.setAdapter(adapter);
         }
 

@@ -89,6 +89,7 @@ public class EncounterCharacter {
         return new EncounterCharacter();
     }
 
+
     public int getIndex() {
         return index;
     }

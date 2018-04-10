@@ -84,7 +84,7 @@ public class CharacterList extends AppCompatActivity {
                 }
             });
 
-        adapter = new CharacterListAdapter(EncountersActivity.characterData, getApplicationContext());
+        adapter = new CharacterListAdapter(EncountersActivity.db.characterDao().getAllCharacterData(), getApplicationContext());
 
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

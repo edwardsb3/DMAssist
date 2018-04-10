@@ -1,6 +1,10 @@
 package com.brentonedwards.dmassist;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverter;
+import android.arch.persistence.room.TypeConverters;
 
 import com.brentonedwards.dmassist.util.Action;
 import com.brentonedwards.dmassist.util.SpecialAbility;
@@ -11,32 +15,58 @@ import java.util.List;
 /**
  * Created by Brenton Edwards 3/20/2018
  */
+@Entity(tableName = "character_data")
 public class CharacterData {
 
+    @PrimaryKey(autoGenerate = true)
+        int uid;
+    @ColumnInfo(name = "name")
     String charName;
+    @ColumnInfo(name = "size")
     String size;
+    @ColumnInfo(name = "type")
     String type;
+    @ColumnInfo(name = "subtype")
     String subtype;
+    @ColumnInfo(name = "alignment")
     String alignment;
+    @ColumnInfo(name = "armor_class")
     int armorClass;
+    @ColumnInfo(name = "hit_points")
     int hitPoints;
+    @ColumnInfo(name = "hit_dice")
     String hitDice;
+    @ColumnInfo(name = "speed")
     String speed;
+    @ColumnInfo(name = "strength")
     int strength;
+    @ColumnInfo(name = "dexterity")
     int dexterity;
+    @ColumnInfo(name = "constitution")
     int constitution;
+    @ColumnInfo(name = "wisdom")
     int wisdom;
+    @ColumnInfo(name = "intelligence")
     int intelligence;
+    @ColumnInfo(name = "charisma")
     int charisma;
-
+    @ColumnInfo(name = "damage_vulnerabilities")
     String damageVulnerabilities;
+    @ColumnInfo(name = "damage_resistance")
     String damageResistances;
+    @ColumnInfo(name = "damage_immunities")
     String damageImmunities;
+    @ColumnInfo(name = "condition_immunities")
     String conditionImmunities;
+    @ColumnInfo(name = "senses")
     String senses;
+    @ColumnInfo(name = "languages")
     String languages;
+    @ColumnInfo(name = "challenge_rating")
     double challengeRating;
+    @ColumnInfo(name = "special_abilities") @TypeConverters(SpecialAttributesDataTypeConverter.class)
     List<SpecialAbility> specialAbilities;
+    @ColumnInfo(name = "actions") @TypeConverters(CharacterDataTypeConverters.class)
     List<Action> actions;
 
     public CharacterData(String charName, String size, String type, String subtype, String alignment, int armorClass, int hitPoints, String hitDice, String speed, int strength, int dexterity, int constitution, int wisdom, int intelligence, int charisma, String damageVulnerabilities, String damageResistances, String damageImmunities, String conditionImmunities, String senses, double challengeRating, String languages, List<SpecialAbility> specialAbilities, List<Action> actions) {

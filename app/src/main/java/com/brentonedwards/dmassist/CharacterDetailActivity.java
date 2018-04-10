@@ -12,8 +12,12 @@ import android.view.View;
 
 import android.widget.TextView;
 
+import com.brentonedwards.dmassist.util.SpecialAbility;
+
 import java.util.Arrays;
 import java.util.List;
+
+import static com.brentonedwards.dmassist.EncountersActivity.db;
 
 
 public class CharacterDetailActivity extends AppCompatActivity {
@@ -86,72 +90,75 @@ public class CharacterDetailActivity extends AppCompatActivity {
         /*
          * TextViews with character data
          */
+        CharacterData selectedChar = EncountersActivity.db.characterDao().findByUid(itemSelected);
 
         charNameTextView = rootView.findViewById(R.id.character_name);
-        charNameTextView.setText(EncountersActivity.characterData.get(itemSelected).charName);
+        charNameTextView.setText(selectedChar.getCharName());
 
         charSubNameTextView = rootView.findViewById(R.id.sub_name);
-        charSubNameTextView.setText(EncountersActivity.characterData.get(itemSelected).getSize() + " " + EncountersActivity.characterData.get(itemSelected).getType() + " " + EncountersActivity.characterData.get(itemSelected).getAlignment());
+        charSubNameTextView.setText(selectedChar.getSize() + " " + selectedChar.getType() + " " + selectedChar.getAlignment());
 
         charArmorClassTextView = rootView.findViewById(R.id.armor_class_val);
-        charArmorClassTextView.setText(String.valueOf(EncountersActivity.characterData.get(itemSelected).armorClass));
+        charArmorClassTextView.setText(String.valueOf(selectedChar.getArmorClass()));
 
         charHitPointsTextView = rootView.findViewById(R.id.hit_points_val);
-        charHitPointsTextView.setText(String.valueOf(EncountersActivity.characterData.get(itemSelected).hitPoints));
+        charHitPointsTextView.setText(String.valueOf(selectedChar.getHitPoints()));
 
         charSpeedTextView = rootView.findViewById(R.id.speed_val);
-        charSpeedTextView.setText(String.valueOf(EncountersActivity.characterData.get(itemSelected).speed));
+        charSpeedTextView.setText(String.valueOf(selectedChar.getSpeed()));
 
 
         statBlockStrValTextView = rootView.findViewById(R.id.stat_str_val);
-        statBlockStrValTextView.setText(String.valueOf(EncountersActivity.characterData.get(itemSelected).getStrength()));
+        statBlockStrValTextView.setText(String.valueOf(selectedChar.getStrength()));
 
 
         statBlockDexValTextView = rootView.findViewById(R.id.stat_dex_val);
-        statBlockDexValTextView.setText(String.valueOf(EncountersActivity.characterData.get(itemSelected).getDexterity()));
+        statBlockDexValTextView.setText(String.valueOf(selectedChar.getDexterity()));
 
 
         statBlockConValTextView = rootView.findViewById(R.id.stat_con_val);
-        statBlockConValTextView.setText(String.valueOf(EncountersActivity.characterData.get(itemSelected).getConstitution()));
+        statBlockConValTextView.setText(String.valueOf(selectedChar.getConstitution()));
 
 
         statBlockIntValTextView = rootView.findViewById(R.id.stat_int_val);
-        statBlockIntValTextView.setText(String.valueOf(EncountersActivity.characterData.get(itemSelected).getIntelligence()));
+        statBlockIntValTextView.setText(String.valueOf(selectedChar.getIntelligence()));
 
 
         statBlockWisValTextView = rootView.findViewById(R.id.stat_wis_val);
-        statBlockWisValTextView.setText(String.valueOf(EncountersActivity.characterData.get(itemSelected).getWisdom()));
+        statBlockWisValTextView.setText(String.valueOf(selectedChar.getWisdom()));
 
 
         statBlockChaValTextView = rootView.findViewById(R.id.stat_cha_val);
-        statBlockChaValTextView.setText(String.valueOf(EncountersActivity.characterData.get(itemSelected).getCharisma()));
+        statBlockChaValTextView.setText(String.valueOf(selectedChar.getCharisma()));
 
         conditionalImmunitiesValTextView = rootView.findViewById(R.id.condition_immunities_val);
-        conditionalImmunitiesValTextView.setText(String.valueOf(EncountersActivity.characterData.get(itemSelected).conditionImmunities));
+        conditionalImmunitiesValTextView.setText(selectedChar.getConditionImmunities());
 
 
         damageImmunitiesValTextView = rootView.findViewById(R.id.damage_immunities_val);
-        damageImmunitiesValTextView.setText(String.valueOf(EncountersActivity.characterData.get(itemSelected).damageImmunities));
+        damageImmunitiesValTextView.setText(selectedChar.getDamageImmunities());
 
 
         sensesValTextView = rootView.findViewById(R.id.senses_val);
-        sensesValTextView.setText(String.valueOf(EncountersActivity.characterData.get(itemSelected).senses));
+        sensesValTextView.setText(String.valueOf(selectedChar.senses));
 
 
         languagesValTextView = rootView.findViewById(R.id.languages_val);
-        languagesValTextView.setText(String.valueOf(EncountersActivity.characterData.get(itemSelected).languages));
+        languagesValTextView.setText(String.valueOf(selectedChar.getLanguages()));
 
 
         challengeRatingValTextView = rootView.findViewById(R.id.challenge_rating_val);
-        challengeRatingValTextView.setText(String.valueOf(EncountersActivity.characterData.get(itemSelected).challengeRating));
+        challengeRatingValTextView.setText(String.valueOf(selectedChar.getChallengeRating()));
+
+
+        specialAbilitiesValTextView = rootView.findViewById(R.id.special_abilities_val);
+        specialAbilitiesValTextView.setText(buildSpecialAbilitiesString(selectedChar));
 
         actionValTextView = rootView.findViewById(R.id.actions_val);
 
 
-        actionValTextView.setText(buildActionString());
+        actionValTextView.setText(buildActionString(selectedChar));
 
-        specialAbilitiesValTextView = rootView.findViewById(R.id.special_abilities_val);
-        specialAbilitiesValTextView.setText(buildSpecialAbilitiesString());
 
 
         width = getScreenWidth();
@@ -221,26 +228,26 @@ public class CharacterDetailActivity extends AppCompatActivity {
     }
 
     //Methods for building the string for the Actions section
-    public String buildActionString() {
-
-        while (index < EncountersActivity.characterData.get(itemSelected).getActions().size()) {
+    public String buildActionString(CharacterData selectedChar) {
+            index=0;
+        while (index < selectedChar.getActions().size()) {
             if (index == 0) {
-                actionTextBuilder = new StringBuilder("Name: " + EncountersActivity.characterData.get(itemSelected).actions.get(index).getName() + "\n");
-                actionTextBuilder.append("Attack Bonus: " + EncountersActivity.characterData.get(itemSelected).actions.get(index).getAttackBonus() + "\n");
-                actionTextBuilder.append("Damage Bonus:" + EncountersActivity.characterData.get(itemSelected).actions.get(index).getDamageBonus() + "\n");
-                actionTextBuilder.append("Dice: " + EncountersActivity.characterData.get(itemSelected).actions.get(index).getDamageDice() + "\n" + "\n");
-                actionTextBuilder.append("Description:\n" + EncountersActivity.characterData.get(itemSelected).actions.get(index).getDesc() + "\n");
+                actionTextBuilder = new StringBuilder("Name: " + selectedChar.getActions().get(index).getName() + "\n");
+                actionTextBuilder.append("Attack Bonus: " + selectedChar.getActions().get(index).getAttackBonus() + "\n");
+                actionTextBuilder.append("Damage Bonus:" + selectedChar.getActions().get(index).getDamageBonus() + "\n");
+                actionTextBuilder.append("Dice: " + selectedChar.getActions().get(index).getDamageDice() + "\n" + "\n");
+                actionTextBuilder.append("Description:\n" + selectedChar.getActions().get(index).getDesc() + "\n");
             } else {
 
-                actionTextBuilder.append("\n" + "\n" + "Name: " + EncountersActivity.characterData.get(itemSelected).actions.get(index).getName() + "\n");
-                actionTextBuilder.append("Attack Bonus: " + EncountersActivity.characterData.get(itemSelected).actions.get(index).getAttackBonus() + "\n");
-                actionTextBuilder.append("Damage Bonus:" + EncountersActivity.characterData.get(itemSelected).actions.get(index).getDamageBonus() + "\n");
-                actionTextBuilder.append("Dice: " + EncountersActivity.characterData.get(itemSelected).actions.get(index).getDamageDice() + "\n" + "\n");
-                actionTextBuilder.append("Description:\n" + EncountersActivity.characterData.get(itemSelected).actions.get(index).getDesc() + "\n");
+                actionTextBuilder.append("\n" + "\n" + "Name: " + selectedChar.getActions().get(index).getName() + "\n");
+                actionTextBuilder.append("Attack Bonus: " + selectedChar.getActions().get(index).getAttackBonus() + "\n");
+                actionTextBuilder.append("Damage Bonus:" + selectedChar.getActions().get(index).getDamageBonus() + "\n");
+                actionTextBuilder.append("Dice: " + selectedChar.getActions().get(index).getDamageDice() + "\n" + "\n");
+                actionTextBuilder.append("Description:\n" + selectedChar.getActions().get(index).getDesc() + "\n");
 
             }
             index++;
-            if (index == EncountersActivity.characterData.get(itemSelected).actions.size()) {
+            if (index == selectedChar.getActions().size()) {
                 return actionText = actionTextBuilder.toString();
             }
 
@@ -250,26 +257,26 @@ public class CharacterDetailActivity extends AppCompatActivity {
 
 
     //Methods for building the string for the Special Abilities section
-    public String buildSpecialAbilitiesString(){
+    public String buildSpecialAbilitiesString(CharacterData selectedChar){
         index =0;
-        if (EncountersActivity.characterData.get(itemSelected).specialAbilities != null) {
-            while (index < EncountersActivity.characterData.get(itemSelected).getSpecialAbilities().size()) {
+        if (selectedChar.getSpecialAbilities() != null) {
+            while (index < selectedChar.getSpecialAbilities().size()) {
 
                 if (index == 0) {
-                    abilityTextBuilder = new StringBuilder("Name: " + EncountersActivity.characterData.get(itemSelected).specialAbilities.get(index).getName() + "\n");
-                    abilityTextBuilder.append("Attack Bonus: " + EncountersActivity.characterData.get(itemSelected).specialAbilities.get(index).getAttackBonus() + "\n" + "\n");
-                    abilityTextBuilder.append("Description:\n" + EncountersActivity.characterData.get(itemSelected).specialAbilities.get(index).getDesc() + "\n");
+                    abilityTextBuilder = new StringBuilder("Name: " + selectedChar.getSpecialAbilities().get(index).getName() + "\n");
+                    abilityTextBuilder.append("Attack Bonus: " + selectedChar.getSpecialAbilities().get(index).getAttackBonus() + "\n" + "\n");
+                    abilityTextBuilder.append("Description:\n" + selectedChar.getSpecialAbilities().get(index).getDesc() + "\n");
                 } else {
 
-                    abilityTextBuilder.append("\n" + "\n" + "Name: " + EncountersActivity.characterData.get(itemSelected).specialAbilities.get(index).getName() + "\n");
-                    abilityTextBuilder.append("Attack Bonus: " + EncountersActivity.characterData.get(itemSelected).specialAbilities.get(index).getAttackBonus() + "\n" + "\n");
-                    abilityTextBuilder.append("Description:\n" + EncountersActivity.characterData.get(itemSelected).specialAbilities.get(index).getDesc() + "\n");
+                    abilityTextBuilder.append("\n" + "\n" + "Name: " + selectedChar.getSpecialAbilities().get(index).getName() + "\n");
+                    abilityTextBuilder.append("Attack Bonus: " + selectedChar.getSpecialAbilities().get(index).getAttackBonus() + "\n" + "\n");
+                    abilityTextBuilder.append("Description:\n" + selectedChar.getSpecialAbilities().get(index).getDesc() + "\n");
 
                 }
                 index++;
             }
 
-            if (index == EncountersActivity.characterData.get(itemSelected).getSpecialAbilities().size()) {
+            if (index == selectedChar.getSpecialAbilities().size()) {
                return abilityTextBuilder.toString();
             }
         } else {

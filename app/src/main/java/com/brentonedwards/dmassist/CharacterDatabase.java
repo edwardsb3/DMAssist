@@ -7,7 +7,7 @@ import android.content.Context;
 
 import com.brentonedwards.dmassist.EncounterCharacterEntity;
 
-@Database(entities = {EncounterCharacterEntity.class, EncounterCharacter.class}, version = 1)
+@Database(entities = {CharacterData.class, EncounterCharacter.class}, version = 1)
 public abstract class CharacterDatabase extends RoomDatabase {
 
         private static CharacterDatabase INSTANCE;

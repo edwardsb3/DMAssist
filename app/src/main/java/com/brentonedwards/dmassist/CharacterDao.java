@@ -16,20 +16,29 @@ import java.util.List;
 public interface CharacterDao {
 
     @Query("SELECT * FROM character")
-    List<EncounterCharacter> getAll();
+    List<EncounterCharacter> getAllEncounterCharacters();
+
+    @Query("SELECT * FROM character_data")
+    List<CharacterData> getAllCharacterData();
 
     @Query("SELECT * FROM character where name = :name")
     EncounterCharacter findByName(String name);
 
+    @Query("SELECT * FROM character_data WHERE uid = :uid")
+    CharacterData findByUid(int uid);
+
     @Query("SELECT COUNT(*) from character")
     int countCharacters();
 
+    @Query("SELECT COUNT(*) from character_data")
+    int countCharacterData();
+
     @Insert
-    void insertAll(EncounterCharacterEntity... characters);
+    void insertAll(CharacterData... characters_data);
 
     @Insert
     void insertAll(EncounterCharacter... characters);
 
     @Delete
-    void delete(EncounterCharacterEntity character);
+    void delete(EncounterCharacter character);
 }

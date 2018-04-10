@@ -15,6 +15,7 @@ import com.brentonedwards.dmassist.CharacterData;
 import com.brentonedwards.dmassist.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -22,7 +23,7 @@ import java.util.ArrayList;
  */
 public class CharacterListAdapter extends ArrayAdapter<CharacterData> implements View.OnClickListener{
 
-    private ArrayList<CharacterData> dataSet;
+    private List<CharacterData> dataSet;
     Context mContext;
 
     // View lookup cache
@@ -35,7 +36,7 @@ public class CharacterListAdapter extends ArrayAdapter<CharacterData> implements
 
 
 
-    public CharacterListAdapter(ArrayList<CharacterData> data, Context context) {
+    public CharacterListAdapter(List<CharacterData> data, Context context) {
         super(context, R.layout.character_row_item, data);
         this.dataSet = data;
         this.mContext=context;

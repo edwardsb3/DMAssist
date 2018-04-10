@@ -21,6 +21,8 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.brentonedwards.dmassist.EncountersActivity.db;
+
 
 /**
  * Created by Brenton Edwards on 03/20/2018.
@@ -109,8 +111,8 @@ public class EncounterListAdapter extends ArrayAdapter<EncounterCharacter> imple
 
 
         viewHolder.nameTextView.setText(encounterCharacterIndex.getName());
-        viewHolder.armorClassTextView.setText(String.valueOf(EncountersActivity.characterData.get(encounterCharacterIndex.getCharacterSheet()).getArmorClass()));
-        viewHolder.hitPointsTextView.setText(String.valueOf(EncountersActivity.characterData.get(encounterCharacterIndex.getCharacterSheet()).getHitPoints()));
+        viewHolder.armorClassTextView.setText(String.valueOf(db.characterDao().findByUid(encounterCharacterIndex.getCharacterSheet()).getArmorClass()));
+        viewHolder.hitPointsTextView.setText(String.valueOf(db.characterDao().findByUid(encounterCharacterIndex.getCharacterSheet()).getHitPoints()));
 
         // Return the completed view to render on screen
         return convertView;
