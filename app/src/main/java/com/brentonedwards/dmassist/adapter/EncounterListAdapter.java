@@ -2,6 +2,7 @@ package com.brentonedwards.dmassist.adapter;
 
 import android.content.Context;
 import android.support.design.widget.Snackbar;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.brentonedwards.dmassist.CharacterData;
+import com.brentonedwards.dmassist.CharacterDetailActivity;
 import com.brentonedwards.dmassist.EncounterCharacter;
 import com.brentonedwards.dmassist.EncountersActivity;
 import com.brentonedwards.dmassist.R;
@@ -31,22 +33,24 @@ public class EncounterListAdapter extends ArrayAdapter<EncounterCharacter> imple
 
     private List<EncounterCharacter> dataSet;
     Context mContext;
-
-
+    public int width;
+    public int colWidth;
     // View lookup cache
     private static class ViewHolder {
         TextView nameTextView;
         TextView armorClassTextView;
         TextView hitPointsTextView;
+        TextView initiativeTextView;
     }
 
 
 
-    public EncounterListAdapter(List<EncounterCharacter> data, Context context) {
+    public EncounterListAdapter(List<EncounterCharacter> data, Context context, int screenWidth) {
         super(context, R.layout.encounter_row_item, data);
         this.dataSet = data;
         this.mContext=context;
-
+        width = screenWidth;
+        colWidth = width/2;
     }
 
 
@@ -93,10 +97,14 @@ public class EncounterListAdapter extends ArrayAdapter<EncounterCharacter> imple
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.encounter_row_item, parent, false);
-            viewHolder.nameTextView = (TextView) convertView.findViewById(R.id.name);
-            viewHolder.armorClassTextView = (TextView) convertView.findViewById(R.id.armor_class);
-            viewHolder.hitPointsTextView = (TextView) convertView.findViewById(R.id.hit_points);
-
+            viewHolder.nameTextView = convertView.findViewById(R.id.name);
+            viewHolder.armorClassTextView = convertView.findViewById(R.id.armor_class);
+            viewHolder.hitPointsTextView = convertView.findViewById(R.id.hit_points);
+            viewHolder.initiativeTextView = convertView.findViewById(R.id.initiative);
+            viewHolder.nameTextView.setWidth(width/2);
+//            viewHolder.hitPointsTextView.setWidth(width/6);
+//            viewHolder.armorClassTextView.setWidth(width/6);
+//            viewHolder.initiativeTextView.setWidth(width/6);
             result=convertView;
 
             convertView.setTag(viewHolder);
@@ -117,6 +125,5 @@ public class EncounterListAdapter extends ArrayAdapter<EncounterCharacter> imple
         // Return the completed view to render on screen
         return convertView;
     }
-
 
 }

@@ -6,6 +6,7 @@ import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
@@ -14,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 
 import com.brentonedwards.dmassist.adapter.EncounterListAdapter;
@@ -28,19 +30,20 @@ import java.util.ArrayList;
 
 public class EncountersActivity extends AppCompatActivity {
 
-    EncounterCharacter newChar;
     public static ArrayList<CharacterData> characterData = new ArrayList<CharacterData>();
     public static ArrayList<EncounterCharacter> encounterCharacter;
     ListView listView;
     public static CharacterDatabase db;
-
+    int listViewHeight;
     private EncounterListAdapter adapter;
-
+    public int width;
     int index = 0;
+    TextView nameColHeader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        listViewHeight = ((getScreenHeight()/10)*9);
         Log.d("myAlert", "Called");
 
         db = Room.databaseBuilder(getApplicationContext(),
@@ -53,8 +56,9 @@ public class EncountersActivity extends AppCompatActivity {
             View someView = findViewById(R.id.encounter_list);
             View root = someView.getRootView();
             root.setBackgroundColor(getResources().getColor(R.color.colorBackground));
-
-            FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.fab);
+//            nameColHeader = findViewById(R.id.name_col_header);
+//            nameColHeader.setWidth(getScreenWidth()/2);
+            FloatingActionButton addButton = findViewById(R.id.fab);
 
 
         int charNum = db.characterDao().countCharacters();
@@ -70,12 +74,11 @@ public class EncountersActivity extends AppCompatActivity {
                 GsonParse[] gsonArray = gson.fromJson(reader, GsonParse[].class);
 
 
-                listView = (ListView) findViewById(R.id.encounter_list);
-
+                listView = findViewById(R.id.encounter_list);
+//                listView.setDividerHeight(listViewHeight);
 
                 while (index < gsonArray.length) {
                     db.characterDao().insertAll(new CharacterData(gsonArray[index].getName(), gsonArray[index].getSize(), gsonArray[index].getType(), gsonArray[index].getSubtype(), gsonArray[index].getAlignment(), gsonArray[index].getArmorClass(), gsonArray[index].getHitPoints(), gsonArray[index].getHitDice(), gsonArray[index].getSpeed(), gsonArray[index].getStrength(), gsonArray[index].getDexterity(), gsonArray[index].getConstitution(), gsonArray[index].getWisdom(), gsonArray[index].getIntelligence(), gsonArray[index].getWisdom(), gsonArray[index].getDamageVulnerabilities(), gsonArray[index].getDamageResistances(), gsonArray[index].getDamageImmunities(), gsonArray[index].getConditionImmunities(), gsonArray[index].getSenses(), gsonArray[index].getChallengeRating(), gsonArray[index].getLanguages(), gsonArray[index].getSpecialAbilities(), gsonArray[index].getActions()));
-//                    characterData.add(new CharacterData(gsonArray[index].getName(), gsonArray[index].getSize(), gsonArray[index].getType(), gsonArray[index].getSubtype(), gsonArray[index].getAlignment(), gsonArray[index].getArmorClass(), gsonArray[index].getHitPoints(), gsonArray[index].getHitDice(), gsonArray[index].getSpeed(), gsonArray[index].getStrength(), gsonArray[index].getDexterity(), gsonArray[index].getConstitution(), gsonArray[index].getWisdom(), gsonArray[index].getIntelligence(), gsonArray[index].getWisdom(), gsonArray[index].getDamageVulnerabilities(), gsonArray[index].getDamageResistances(), gsonArray[index].getDamageImmunities(), gsonArray[index].getConditionImmunities(), gsonArray[index].getSenses(), gsonArray[index].getChallengeRating(), gsonArray[index].getLanguages(), gsonArray[index].getSpecialAbilities(), gsonArray[index].getActions()));
                     index++;
                 }
                 Log.d("myAlert", String.valueOf(db.characterDao().countCharacterData()));
@@ -96,7 +99,7 @@ public class EncountersActivity extends AppCompatActivity {
 //        encounterCharacter.add(new EncounterCharacter(1,"Bilmy", characterData.get(1)));
 //            db.characterDao().insertAll(new EncounterCharacter(), new EncounterCharacter(), new EncounterCharacter());
 
-            adapter = new EncounterListAdapter(db.characterDao().getAllEncounterCharacters(), getApplicationContext());
+            adapter = new EncounterListAdapter(db.characterDao().getAllEncounterCharacters(), getApplicationContext(), width);
 
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -160,11 +163,24 @@ public class EncountersActivity extends AppCompatActivity {
             int newCharReferenceIndex = getIntent().getIntExtra("index", 0);
             db.characterDao().insertAll(new EncounterCharacter(db.characterDao().findByUid(newCharReferenceIndex).charName, newCharReferenceIndex));
             adapter = null;
-            adapter = new EncounterListAdapter(db.characterDao().getAllEncounterCharacters(), this);
+            adapter = new EncounterListAdapter(db.characterDao().getAllEncounterCharacters(), this, width);
             listView.setAdapter(adapter);
         }
 
             }
+    public int getScreenHeight(){
+        //Get display information to set width of views
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        return displayMetrics.heightPixels;
+    }
+
+    public int getScreenWidth(){
+        //Get display information to set width of views
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        return displayMetrics.widthPixels;
+    }
 
         }
 

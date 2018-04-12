@@ -7,13 +7,53 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".EncountersActivity">
+<android.support.constraint.ConstraintLayout
+    android:id="@+id/constraint_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/linear_layout"
+        app:layout_constraintTop_toTopOf="@id/constraint_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimaryDark">
+        <TextView
+            android:id="@+id/name_col_header"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            />
+        <ImageView
+            android:id="@+id/armor_class_shield"
+            android:layout_width="50dp"
+            android:layout_marginLeft="5dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:src="@drawable/shield_col"/>
+        <ImageView
+            android:id="@+id/hit_points_heart"
+            android:layout_width="50dp"
+            android:layout_marginLeft="5dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/health_col"/>
+        <ImageView
+            android:id="@+id/initiative_dice"
+            android:layout_width="50dp"
+            android:layout_marginLeft="5dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:src="@drawable/init_col"/>
 
+    </LinearLayout>
     <ListView
         android:id="@+id/encounter_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/linear_layout"
+        >
 
     </ListView>
+</android.support.constraint.ConstraintLayout>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="56dp"

@@ -60,7 +60,7 @@ public class CharacterDetailActivity extends AppCompatActivity {
     StringBuilder actionTextBuilder;
     String actionText = "";
     String abilityText = "";
-    int width;
+    public int width;
     int itemSelected;
     int index = 0;
 
