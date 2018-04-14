@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -27,11 +28,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class EncountersActivity extends AppCompatActivity {
 
     public static ArrayList<CharacterData> characterData = new ArrayList<CharacterData>();
-    public static ArrayList<EncounterCharacter> encounterCharacter;
+    public static ArrayList<EncounterCharacter> encounterCharacters;
+    List currentEncounterCharacters;
     ListView listView;
     public static CharacterDatabase db;
     int listViewHeight;
@@ -39,7 +43,9 @@ public class EncountersActivity extends AppCompatActivity {
     public int width;
     int index = 0;
     TextView nameColHeader;
-
+    com.github.clans.fab.FloatingActionButton addMonsterButton;
+    com.github.clans.fab.FloatingActionButton addCharacterButton;
+    com.github.clans.fab.FloatingActionButton rollInitiativeButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,11 +64,10 @@ public class EncountersActivity extends AppCompatActivity {
             root.setBackgroundColor(getResources().getColor(R.color.colorBackground));
 //            nameColHeader = findViewById(R.id.name_col_header);
 //            nameColHeader.setWidth(getScreenWidth()/2);
-            FloatingActionButton addButton = findViewById(R.id.fab);
+            rollInitiativeButton = findViewById(R.id.roll_initiative_button);
+            addCharacterButton = findViewById(R.id.add_character_button);
+            addMonsterButton = findViewById(R.id.add_monster_button);
 
-
-        int charNum = db.characterDao().countCharacters();
-        Log.d("myAlert", String.valueOf(charNum));
 
             try {
                 AssetManager assetManager = getAssets();
@@ -94,7 +99,7 @@ public class EncountersActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            encounterCharacter = new ArrayList<EncounterCharacter>();
+            encounterCharacters = new ArrayList<EncounterCharacter>();
 
 //        encounterCharacter.add(new EncounterCharacter(1,"Bilmy", characterData.get(1)));
 //            db.characterDao().insertAll(new EncounterCharacter(), new EncounterCharacter(), new EncounterCharacter());
@@ -116,13 +121,46 @@ public class EncountersActivity extends AppCompatActivity {
             });
 
 
-            addButton.setOnClickListener(new View.OnClickListener() {
+
+            addMonsterButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
 
 
 
             Intent myIntent = new Intent(EncountersActivity.this, CharacterList.class);
             EncountersActivity.this.startActivity(myIntent);
+
+                }
+            });
+            rollInitiativeButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+
+                    encounterCharacters.clear();
+                    encounterCharacters.addAll(db.characterDao().getAllEncounterCharacters());
+                    index = 0;
+                    Random initiativeRoll = new Random();
+                    while(index < encounterCharacters.size()) {
+                        int initiativeValue = initiativeRoll.nextInt(20) +1;
+                        Log.d("myAlert", String.valueOf(initiativeValue));
+                        db.characterDao().updateInitiative(encounterCharacters.get(index).getIndex(), initiativeValue);
+                        encounterCharacters.get(index).setInitiative(initiativeValue);
+                        index++;
+                    }
+
+                    adapter = null;
+                    adapter = new EncounterListAdapter(db.characterDao().getAllEncounterCharacters(), getApplicationContext(), width);
+                    listView.setAdapter(adapter);
+
+
+                }
+            });
+            addCharacterButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+
+
+
+                    Intent myIntent = new Intent(EncountersActivity.this, CreateCharacter.class);
+                    EncountersActivity.this.startActivity(myIntent);
 
                 }
             });
@@ -161,7 +199,7 @@ public class EncountersActivity extends AppCompatActivity {
         super.onResume();
         if(getIntent().hasExtra("index")) {
             int newCharReferenceIndex = getIntent().getIntExtra("index", 0);
-            db.characterDao().insertAll(new EncounterCharacter(db.characterDao().findByUid(newCharReferenceIndex).charName, newCharReferenceIndex));
+            db.characterDao().insertAll(new EncounterCharacter(db.characterDao().findCharacterDataByUid(newCharReferenceIndex).charName, newCharReferenceIndex));
             adapter = null;
             adapter = new EncounterListAdapter(db.characterDao().getAllEncounterCharacters(), this, width);
             listView.setAdapter(adapter);

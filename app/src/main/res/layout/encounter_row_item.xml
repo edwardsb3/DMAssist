@@ -2,6 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -10,7 +11,7 @@
         android:layout_width="150dp"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:text="Tartuga"
+        android:layout_marginBottom="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@android:color/black" />
@@ -22,37 +23,82 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/name"
         app:layout_constraintLeft_toRightOf="@id/name"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="30dp"
+        android:textAlignment="center"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_marginLeft="50dp"
+        android:layout_marginLeft="40dp"
         android:text="00"
-        android:textColor="@android:color/darker_gray" />
+        android:textColor="@color/armorFontColor" />
 
     <TextView
         android:id="@+id/hit_points"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toRightOf="@id/armor_class"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="50dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="40dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="00"
-        android:textColor="@android:color/holo_red_dark" />
+        android:textColor="@color/healthFontColor"
+        />
 
     <TextView
         android:id="@+id/initiative"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toRightOf="@id/hit_points"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="50dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="40dp"
         app:layout_constraintRight_toRightOf="parent"
 
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="20"
-        android:textColor="@android:color/holo_blue_bright" />
+        android:text="00"
+        android:textColor="@color/initiativeFontColor" />
 
+    <ImageView
+        android:id="@+id/armor_class_image"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/name"
+        app:layout_constraintLeft_toRightOf="@id/name"
 
+        app:layout_constraintRight_toRightOf="@+id/armor_class"
+        app:layout_constraintTop_toTopOf="@id/armor_class"
+        app:layout_constraintBottom_toBottomOf="@id/armor_class"
+        app:layout_constraintLeft_toLeftOf="@id/armor_class"
+        android:scaleType="fitXY"
+        android:src="@drawable/shield_col"
+        android:alpha=".4"
+        />
+
+    <ImageView
+        android:id="@+id/hit_points_image"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_below="@+id/name"
+        android:layout_marginTop="5dp"
+        app:layout_constraintTop_toTopOf="@id/hit_points"
+        app:layout_constraintRight_toRightOf="@+id/hit_points"
+        app:layout_constraintBottom_toBottomOf="@id/hit_points"
+        app:layout_constraintLeft_toLeftOf="@id/hit_points"
+        android:scaleType="fitXY"
+        android:src="@drawable/health_col"
+        android:alpha=".4"
+        />
+    <ImageView
+        android:id="@+id/initiative_image"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintRight_toRightOf="@+id/initiative"
+        app:layout_constraintTop_toTopOf="@id/initiative"
+        app:layout_constraintBottom_toBottomOf="@id/initiative"
+        app:layout_constraintLeft_toLeftOf="@id/initiative"
+        android:scaleType="fitXY"
+        android:src="@drawable/init_col"
+        android:alpha=".4"
+        />
 
 </android.support.constraint.ConstraintLayout>
 

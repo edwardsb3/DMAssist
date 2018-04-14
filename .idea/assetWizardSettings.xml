@@ -16,11 +16,26 @@
                             <entry key="actionbar">
                               <value>
                                 <PersistentState>
+                                  <option name="children">
+                                    <map>
+                                      <entry key="image">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="trimmed" value="true" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
+                                    </map>
+                                  </option>
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="C:\Users\brent\Desktop\MobileAssets\icons8-shield-96.png" />
-                                      <entry key="outputName" value="shield_col" />
+                                      <entry key="imageAsset" value="C:\Users\brent\Desktop\MobileAssets\icons8-heart-outline-96.png" />
+                                      <entry key="outputName" value="health_col" />
                                     </map>
                                   </option>
                                 </PersistentState>

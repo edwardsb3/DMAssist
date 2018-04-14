@@ -1,26 +1,21 @@
 package com.brentonedwards.dmassist;
 
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import android.widget.TextView;
-
-import com.brentonedwards.dmassist.util.SpecialAbility;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static com.brentonedwards.dmassist.EncountersActivity.db;
-
-
-public class CharacterDetailActivity extends AppCompatActivity {
+public class CreateCharacter extends AppCompatActivity {
 
 
     List<TextView> statBlockViews;
@@ -34,7 +29,7 @@ public class CharacterDetailActivity extends AppCompatActivity {
     TextView statBlockWis;
     TextView statBlockCha;
     TextView conditionalImmunities;
-    TextView damageImmunities;
+    TextView proficiencies;
     TextView senses;
     TextView challengeRating;
     TextView languages;
@@ -68,8 +63,8 @@ public class CharacterDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_character_details);
-        someView = findViewById(R.id.challenge_rating_val);
+        setContentView(R.layout.activity_create_character);
+        someView = findViewById(R.id.character_name);
         rootView = someView.getRootView();
         rootView.setBackgroundColor(getResources().getColor(R.color.colorBackground));
         addButton = findViewById(R.id.fab);
@@ -80,101 +75,91 @@ public class CharacterDetailActivity extends AppCompatActivity {
         statBlockInt = rootView.findViewById(R.id.stat_int);
         statBlockWis = rootView.findViewById(R.id.stat_wis);
         statBlockCha = rootView.findViewById(R.id.stat_cha);
-        conditionalImmunities = rootView.findViewById(R.id.condition_immunities);
-        damageImmunities = rootView.findViewById(R.id.damage_immunities);
+        proficiencies = rootView.findViewById(R.id.proficiencies);
         senses = rootView.findViewById(R.id.senses);
-        challengeRating = rootView.findViewById(R.id.challenge_rating);
         languages = rootView.findViewById(R.id.languages);
 
 
         /*
          * TextViews with character data
          */
-        CharacterData selectedChar = EncountersActivity.db.characterDao().findCharacterDataByUid(itemSelected);
-
-        charNameTextView = rootView.findViewById(R.id.character_name);
-        charNameTextView.setText(selectedChar.getCharName());
-
-        charSubNameTextView = rootView.findViewById(R.id.sub_name);
-        charSubNameTextView.setText(selectedChar.getSize() + " " + selectedChar.getType() + " " + selectedChar.getAlignment());
-
-        charArmorClassTextView = rootView.findViewById(R.id.armor_class_val);
-        charArmorClassTextView.setText(String.valueOf(selectedChar.getArmorClass()));
-
-        charHitPointsTextView = rootView.findViewById(R.id.hit_points_val);
-        charHitPointsTextView.setText(String.valueOf(selectedChar.getHitPoints()));
-
+//        CharacterData selectedChar = EncountersActivity.db.characterDao().findCharacterDataByUid(itemSelected);
+//
+//        charNameTextView = rootView.findViewById(R.id.character_name);
+//        charNameTextView.setText(selectedChar.getCharName());
+//
+//        charSubNameTextView = rootView.findViewById(R.id.sub_name);
+//        charSubNameTextView.setText(selectedChar.getSize() + " " + selectedChar.getType() + " " + selectedChar.getAlignment());
+//
+//        charArmorClassTextView = rootView.findViewById(R.id.armor_class_val);
+//        charArmorClassTextView.setText(String.valueOf(selectedChar.getArmorClass()));
+//
+//        charHitPointsTextView = rootView.findViewById(R.id.hit_points_val);
+//        charHitPointsTextView.setText(String.valueOf(selectedChar.getHitPoints()));
+//
         charSpeedTextView = rootView.findViewById(R.id.speed_val);
-        charSpeedTextView.setText(String.valueOf(selectedChar.getSpeed()));
-
 
         statBlockStrValTextView = rootView.findViewById(R.id.stat_str_val);
-        statBlockStrValTextView.setText(String.valueOf(selectedChar.getStrength()));
 
 
         statBlockDexValTextView = rootView.findViewById(R.id.stat_dex_val);
-        statBlockDexValTextView.setText(String.valueOf(selectedChar.getDexterity()));
 
 
         statBlockConValTextView = rootView.findViewById(R.id.stat_con_val);
-        statBlockConValTextView.setText(String.valueOf(selectedChar.getConstitution()));
 
 
         statBlockIntValTextView = rootView.findViewById(R.id.stat_int_val);
-        statBlockIntValTextView.setText(String.valueOf(selectedChar.getIntelligence()));
 
 
         statBlockWisValTextView = rootView.findViewById(R.id.stat_wis_val);
-        statBlockWisValTextView.setText(String.valueOf(selectedChar.getWisdom()));
 
 
         statBlockChaValTextView = rootView.findViewById(R.id.stat_cha_val);
-        statBlockChaValTextView.setText(String.valueOf(selectedChar.getCharisma()));
 
-        conditionalImmunitiesValTextView = rootView.findViewById(R.id.condition_immunities_val);
-        conditionalImmunitiesValTextView.setText(selectedChar.getConditionImmunities());
-
-
-        damageImmunitiesValTextView = rootView.findViewById(R.id.damage_immunities_val);
-        damageImmunitiesValTextView.setText(selectedChar.getDamageImmunities());
-
-
-        sensesValTextView = rootView.findViewById(R.id.senses_val);
-        sensesValTextView.setText(String.valueOf(selectedChar.senses));
-
-
-        languagesValTextView = rootView.findViewById(R.id.languages_val);
-        languagesValTextView.setText(String.valueOf(selectedChar.getLanguages()));
-
-
-        challengeRatingValTextView = rootView.findViewById(R.id.challenge_rating_val);
-        challengeRatingValTextView.setText(String.valueOf(selectedChar.getChallengeRating()));
-
-
-        specialAbilitiesValTextView = rootView.findViewById(R.id.special_abilities_val);
-        specialAbilitiesValTextView.setText(buildSpecialAbilitiesString(selectedChar));
-
-        actionValTextView = rootView.findViewById(R.id.actions_val);
-
-
-        actionValTextView.setText(buildActionString(selectedChar));
-
-
-
+//        conditionalImmunitiesValTextView = rootView.findViewById(R.id.condition_immunities_val);
+//        conditionalImmunitiesValTextView.setText(selectedChar.getConditionImmunities());
+//
+//
+//        damageImmunitiesValTextView = rootView.findViewById(R.id.damage_immunities_val);
+//        damageImmunitiesValTextView.setText(selectedChar.getDamageImmunities());
+//
+//
+//        sensesValTextView = rootView.findViewById(R.id.senses_val);
+//        sensesValTextView.setText(String.valueOf(selectedChar.senses));
+//
+//
+//        languagesValTextView = rootView.findViewById(R.id.languages_val);
+//        languagesValTextView.setText(String.valueOf(selectedChar.getLanguages()));
+//
+//
+//        challengeRatingValTextView = rootView.findViewById(R.id.challenge_rating_val);
+//        challengeRatingValTextView.setText(String.valueOf(selectedChar.getChallengeRating()));
+//
+//
+//        specialAbilitiesValTextView = rootView.findViewById(R.id.special_abilities_val);
+//        specialAbilitiesValTextView.setText(buildSpecialAbilitiesString(selectedChar));
+//
+//        actionValTextView = rootView.findViewById(R.id.actions_val);
+//
+//
+//        actionValTextView.setText(buildActionString(selectedChar));
+//
+//
+//
         width = getScreenWidth();
-
-
-        challengeRating.setWidth(width / 2);
-        challengeRatingValTextView.setWidth(width / 2);
-        languages.setWidth(width / 2);
-        languagesValTextView.setWidth(width / 2);
-        senses.setWidth(width / 2);
-        sensesValTextView.setWidth(width / 2);
-        damageImmunitiesValTextView.setWidth(width / 2);
-        damageImmunities.setWidth(width / 2);
-        conditionalImmunities.setWidth(width / 2);
-        conditionalImmunitiesValTextView.setWidth(width / 2);
-
+//
+//
+//        challengeRating.setWidth(width / 2);
+//        challengeRatingValTextView.setWidth(width / 2);
+//        languages.setWidth(width / 2);
+//        languagesValTextView.setWidth(width / 2);
+//        senses.setWidth(width / 2);
+//        sensesValTextView.setWidth(width / 2);
+//        damageImmunitiesValTextView.setWidth(width / 2);
+//        damageImmunities.setWidth(width / 2);
+//        conditionalImmunities.setWidth(width / 2);
+//        conditionalImmunitiesValTextView.setWidth(width / 2);
+//
         statBlockViews = Arrays.asList(statBlockStr, statBlockDex, statBlockCon, statBlockInt, statBlockWis, statBlockCha);
         setEvenWidth(statBlockViews, width);
         statBlockViews = Arrays.asList(statBlockStrValTextView, statBlockDexValTextView, statBlockConValTextView, statBlockIntValTextView, statBlockWisValTextView, statBlockChaValTextView);
@@ -182,7 +167,7 @@ public class CharacterDetailActivity extends AppCompatActivity {
 
         addButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent myIntent = new Intent(CharacterDetailActivity.this, EncountersActivity.class);
+                Intent myIntent = new Intent(CreateCharacter.this, EncountersActivity.class);
                 myIntent.putExtra("index", itemSelected);
                 startActivity(myIntent);
 
@@ -229,7 +214,7 @@ public class CharacterDetailActivity extends AppCompatActivity {
 
     //Methods for building the string for the Actions section
     public String buildActionString(CharacterData selectedChar) {
-            index=0;
+        index=0;
         while (index < selectedChar.getActions().size()) {
             if (index == 0) {
                 actionTextBuilder = new StringBuilder("Name: " + selectedChar.getActions().get(index).getName() + "\n");
@@ -277,7 +262,7 @@ public class CharacterDetailActivity extends AppCompatActivity {
             }
 
             if (index == selectedChar.getSpecialAbilities().size()) {
-               return abilityTextBuilder.toString();
+                return abilityTextBuilder.toString();
             }
         } else {
             return "None";
@@ -286,9 +271,9 @@ public class CharacterDetailActivity extends AppCompatActivity {
     }
 
     public int getScreenWidth(){
-    //Get display information to set width of views
-    DisplayMetrics displayMetrics = new DisplayMetrics();
-    getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-    return displayMetrics.widthPixels;
+        //Get display information to set width of views
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        return displayMetrics.widthPixels;
     }
 }

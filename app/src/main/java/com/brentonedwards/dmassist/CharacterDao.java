@@ -25,13 +25,19 @@ public interface CharacterDao {
     EncounterCharacter findByName(String name);
 
     @Query("SELECT * FROM character_data WHERE uid = :uid")
-    CharacterData findByUid(int uid);
+    CharacterData findCharacterDataByUid(int uid);
+
+    @Query("SELECT * FROM character WHERE `index` = :index")
+    EncounterCharacter findEncounterCharacterByUid(int index);
 
     @Query("SELECT COUNT(*) from character")
     int countCharacters();
 
     @Query("SELECT COUNT(*) from character_data")
     int countCharacterData();
+
+    @Query("UPDATE character SET initiative = :initiative  WHERE `index` = :index")
+            int updateInitiative(int index, int initiative);
 
     @Insert
     void insertAll(CharacterData... characters_data);

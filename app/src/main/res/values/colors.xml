@@ -7,4 +7,7 @@
     <color name="fontColor">#845646</color>
     <color name="colorBackground">#FDF1D9</color>
     <color name="fabButtonColor">#ba5a2c</color>
+    <color name="armorFontColor">#000000</color>
+    <color name="healthFontColor">#ff0000</color>
+    <color name="initiativeFontColor">#2ca2ba</color>
 </resources>

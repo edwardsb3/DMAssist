@@ -1,0 +1,382 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.brentonedwards.dmassist.CharacterDetailActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+
+            <EditText
+                android:id="@+id/character_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15pt"
+                android:textStyle="bold"
+                android:textColor="#885D4B"
+                app:layout_constraintTop_toTopOf= "parent"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:hint= "Your Character Name"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:maxLines="1"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+
+            <View
+                android:id="@+id/line1"
+                app:layout_constraintTop_toBottomOf="@+id/character_name"
+                android:layout_width="fill_parent"
+                android:layout_height="3dp"
+                android:background="#5b1c1c"/>
+
+            <TextView
+                android:id="@+id/armor_class"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf= "@+id/line1"
+                android:layout_marginTop="20dp"
+                android:textColor="#885D4B"
+                android:text = "Armor Class: "
+                app:layout_constraintLeft_toLeftOf="parent"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+
+            <EditText
+                android:id="@+id/armor_class_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf= "@+id/line1"
+                app:layout_constraintLeft_toRightOf="@+id/armor_class"
+                android:layout_marginTop="20dp"
+                android:textColor="#885D4B"
+                android:text = "10"
+                android:inputType="number"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+
+            <TextView
+                android:id="@+id/hit_points"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf= "@+id/armor_class"
+                android:layout_marginTop="5dp"
+                android:textColor="#885D4B"
+                android:text = "Hit Points "
+                app:layout_constraintLeft_toLeftOf="parent"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+
+            <EditText
+                android:id="@+id/hit_points_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf= "@+id/armor_class_val"
+                android:layout_marginTop="5dp"
+                android:textColor="#885D4B"
+                android:text = "50"
+                android:inputType="number"
+                app:layout_constraintLeft_toRightOf="@id/hit_points"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+
+
+
+            <TextView
+                android:id="@+id/speed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf= "@+id/hit_points"
+                android:layout_marginTop="5dp"
+                android:textColor="#885D4B"
+                android:text = "Speed: "
+                app:layout_constraintLeft_toLeftOf="parent"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+
+            <EditText
+                android:id="@+id/speed_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf= "@+id/hit_points_val"
+                android:layout_marginTop="5dp"
+                android:textColor="#885D4B"
+                android:text = "25"
+                android:inputType="number"
+                app:layout_constraintLeft_toRightOf="@id/speed"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+
+            <View
+                android:id="@+id/line2"
+                app:layout_constraintTop_toBottomOf="@+id/speed"
+                android:layout_width="fill_parent"
+                android:layout_height="3dp"
+                android:background="#5b1c1c"/>
+
+            <TextView
+                android:id="@+id/stat_str"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf= "@+id/line2"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                android:layout_marginTop="20dp"
+                android:textStyle="bold"
+                android:textColor="#885D4B"
+                android:text = "STR"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/stat_dex"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+            <TextView
+                android:id="@+id/stat_dex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf= "@+id/line2"
+                android:layout_marginTop="20dp"
+                android:textStyle="bold"
+                android:textColor="#885D4B"
+                android:text = "DEX"
+                app:layout_constraintRight_toLeftOf="@id/stat_con"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+            <TextView
+                android:id="@+id/stat_con"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf= "@+id/line2"
+                android:text = "CON"
+                android:layout_marginTop="20dp"
+                android:textStyle="bold"
+                android:textColor="#885D4B"
+                app:layout_constraintRight_toLeftOf="@id/stat_int"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+            <TextView
+                android:id="@+id/stat_int"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf= "@+id/line2"
+                android:layout_marginTop="20dp"
+                android:textStyle="bold"
+                android:textColor="#885D4B"
+                android:text = "INT"
+                app:layout_constraintRight_toLeftOf="@id/stat_wis"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+            <TextView
+                android:id="@+id/stat_wis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf= "@+id/line2"
+                android:text = "WIS"
+                android:layout_marginTop="20dp"
+                android:textStyle="bold"
+                android:textColor="#885D4B"
+                app:layout_constraintRight_toLeftOf="@id/stat_cha"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+            <TextView
+                android:id="@+id/stat_cha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf= "@+id/line2"
+                android:layout_marginTop="20dp"
+                android:textStyle="bold"
+                android:textColor="#885D4B"
+                app:layout_constraintRight_toLeftOf="parent"
+                android:text = "CHA"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+            <EditText
+                android:id="@+id/stat_str_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf= "@+id/stat_str"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                android:layout_marginTop="5dp"
+                android:inputType="number"
+                android:textColor="#885D4B"
+                android:text = "10"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/stat_dex_val"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+            <EditText
+                android:id="@+id/stat_dex_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf= "@+id/stat_dex"
+                android:layout_marginTop="5dp"
+                android:textColor="#885D4B"
+                android:text = "10"
+                android:inputType="number"
+                app:layout_constraintRight_toLeftOf="@id/stat_con_val"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+            <EditText
+                android:id="@+id/stat_con_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf= "@+id/stat_con"
+                android:text = "10"
+                android:inputType="number"
+                android:layout_marginTop="5dp"
+                android:textColor="#885D4B"
+                app:layout_constraintRight_toLeftOf="@id/stat_int_val"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+            <EditText
+                android:id="@+id/stat_int_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf= "@+id/stat_int"
+                android:layout_marginTop="5dp"
+                android:textColor="#885D4B"
+                android:text = "10"
+                android:inputType="number"
+                app:layout_constraintRight_toLeftOf="@id/stat_wis_val"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+            <EditText
+                android:id="@+id/stat_wis_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf= "@+id/stat_wis"
+                android:text = "10"
+                android:inputType="number"
+                android:layout_marginTop="5dp"
+                android:textColor="#885D4B"
+                app:layout_constraintRight_toLeftOf="@id/stat_cha_val"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+            <EditText
+                android:id="@+id/stat_cha_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#885D4B"
+                app:layout_constraintTop_toBottomOf= "@+id/stat_cha"
+                android:layout_marginTop="5dp"
+                app:layout_constraintRight_toLeftOf="parent"
+                android:text = "10"
+                android:inputType="number"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+            <TextView
+                android:id="@+id/proficiencies"
+                android:layout_width="wrap_content"
+                android:layout_height="85dp"
+                app:layout_constraintTop_toBottomOf= "@+id/stat_str_val"
+                android:layout_marginTop="20dp"
+                android:textColor="#885D4B"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:text = "Proficiencies:"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+            <TextView
+                android:id="@+id/proficiencies_val"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="none"
+                android:maxLines="100"
+                android:scrollHorizontally="false"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toBottomOf="@id/proficiencies"
+                android:textColor="#885D4B"
+                android:text = "Acid, Bludgeoning, Cold, Fire, Force, Lightning, Necrotic, Piercing, Poison, Psychic, Radiant, Slashing, Thunder"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+
+            <TextView
+                android:id="@+id/senses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:textColor="#885D4B"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/proficiencies_val"
+                android:text = "Senses"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+            <TextView
+                android:id="@+id/senses_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf= "@+id/proficiencies_val"
+                app:layout_constraintLeft_toRightOf="@id/senses"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="25dp"
+                android:textColor="#885D4B"
+                android:text = "blindsight 60ft"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+
+            <TextView
+                android:id="@+id/languages"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#885D4B"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf= "@+id/senses"
+                android:layout_marginTop="25dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:text = "Languages"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+            <TextView
+                android:id="@+id/languages_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#885D4B"
+                app:layout_constraintTop_toBottomOf= "@+id/senses_val"
+                android:layout_marginTop="25dp"
+                app:layout_constraintLeft_toRightOf="@+id/languages"
+                android:text = "None"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+
+
+            <View
+                android:id="@+id/line3"
+                app:layout_constraintTop_toBottomOf="@+id/challenge_rating_val"
+                android:layout_width="fill_parent"
+                android:layout_height="3dp"
+                android:background="#5b1c1c"/>
+
+
+
+
+
+        </android.support.constraint.ConstraintLayout>
+
+
+
+
+
+
+
+    </ScrollView>
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="@dimen/fab_margin"
+        />
+
+</android.support.constraint.ConstraintLayout>

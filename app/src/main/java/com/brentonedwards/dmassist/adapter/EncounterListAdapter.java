@@ -41,6 +41,7 @@ public class EncounterListAdapter extends ArrayAdapter<EncounterCharacter> imple
         TextView armorClassTextView;
         TextView hitPointsTextView;
         TextView initiativeTextView;
+        ImageView armorClassImageView;
     }
 
 
@@ -101,7 +102,10 @@ public class EncounterListAdapter extends ArrayAdapter<EncounterCharacter> imple
             viewHolder.armorClassTextView = convertView.findViewById(R.id.armor_class);
             viewHolder.hitPointsTextView = convertView.findViewById(R.id.hit_points);
             viewHolder.initiativeTextView = convertView.findViewById(R.id.initiative);
+            viewHolder.armorClassImageView = convertView.findViewById(R.id.armor_class_image);
             viewHolder.nameTextView.setWidth(width/2);
+//            viewHolder.armorClassImageView.setMinimumWidth(viewHolder.armorClassTextView.getWidth());
+//            viewHolder.armorClassImageView.setMinimumHeight(viewHolder.armorClassTextView.getHeight());
 //            viewHolder.hitPointsTextView.setWidth(width/6);
 //            viewHolder.armorClassTextView.setWidth(width/6);
 //            viewHolder.initiativeTextView.setWidth(width/6);
@@ -118,10 +122,10 @@ public class EncounterListAdapter extends ArrayAdapter<EncounterCharacter> imple
         lastPosition = position;
 
 
-        viewHolder.nameTextView.setText(encounterCharacterIndex.getName());
-        viewHolder.armorClassTextView.setText(String.valueOf(db.characterDao().findByUid(encounterCharacterIndex.getCharacterSheet()).getArmorClass()));
-        viewHolder.hitPointsTextView.setText(String.valueOf(db.characterDao().findByUid(encounterCharacterIndex.getCharacterSheet()).getHitPoints()));
-
+        viewHolder.nameTextView.setText(db.characterDao().findCharacterDataByUid(encounterCharacterIndex.getIndex()).getCharName());
+        viewHolder.armorClassTextView.setText(String.valueOf(db.characterDao().findCharacterDataByUid(encounterCharacterIndex.getIndex()).getArmorClass()));
+        viewHolder.hitPointsTextView.setText(String.valueOf(db.characterDao().findCharacterDataByUid(encounterCharacterIndex.getIndex()).getHitPoints()));
+        viewHolder.initiativeTextView.setText(String.valueOf(db.characterDao().findEncounterCharacterByUid(encounterCharacterIndex.getIndex()).getInitiative()));
         // Return the completed view to render on screen
         return convertView;
     }
