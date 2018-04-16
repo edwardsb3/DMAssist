@@ -112,7 +112,8 @@ public class EncountersActivity extends AppCompatActivity {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                     Intent myIntent = new Intent(EncountersActivity.this, CharacterDetailActivity.class);
-                    myIntent.putExtra("Value", position);
+                    if(!db.characterDao().findEncounterCharacterByUid(position+1).isPlayerCharacter){ myIntent.putExtra("Value", position);}
+                    else{myIntent.putExtra("Value", db.characterDao().findEncounterCharacterByUid(position+1).getCharacterSheetIndex());}
                     EncountersActivity.this.startActivity(myIntent);
 //                EncounterCharacter encounterCharacter = EncountersActivity.encounterCharacter.get(position);
 //                Snackbar.make(view, encounterCharacter.getCharName()+" has been created.", Snackbar.LENGTH_LONG)
@@ -147,8 +148,9 @@ public class EncountersActivity extends AppCompatActivity {
                         index++;
                     }
 
+
                     adapter = null;
-                    adapter = new EncounterListAdapter(db.characterDao().getAllEncounterCharacters(), getApplicationContext(), width);
+                    adapter = new EncounterListAdapter(db.characterDao().initiativeList(), getApplicationContext(), width);
                     listView.setAdapter(adapter);
 
 
@@ -203,6 +205,7 @@ public class EncountersActivity extends AppCompatActivity {
             adapter = null;
             adapter = new EncounterListAdapter(db.characterDao().getAllEncounterCharacters(), this, width);
             listView.setAdapter(adapter);
+            getIntent().removeExtra("index");
         }
 
             }

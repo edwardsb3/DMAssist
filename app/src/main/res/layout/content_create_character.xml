@@ -1,6 +1,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -28,8 +29,7 @@
                 android:maxLines="1"
                 android:imeOptions="actionDone"
                 android:inputType="text"
-                tools:layout_constraintLeft_creator="1"
-                tools:layout_constraintTop_creator="1" />
+                />
 
             <View
                 android:id="@+id/line1"
@@ -43,7 +43,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf= "@+id/line1"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="15dp"
+                android:textSize="10pt"
                 android:textColor="#885D4B"
                 android:text = "Armor Class: "
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -56,37 +57,39 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf= "@+id/line1"
                 app:layout_constraintLeft_toRightOf="@+id/armor_class"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="5dp"
                 android:textColor="#885D4B"
-                android:text = "10"
-                android:inputType="number"
-                tools:layout_constraintLeft_creator="1"
-                tools:layout_constraintTop_creator="1" />
+                android:textSize="10pt"
+                android:imeOptions="actionDone"
+                android:hint = "10"
+                android:inputType="number" />
 
             <TextView
                 android:id="@+id/hit_points"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf= "@+id/armor_class"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="15dp"
+                android:textSize="10pt"
                 android:textColor="#885D4B"
                 android:text = "Hit Points "
                 app:layout_constraintLeft_toLeftOf="parent"
-                tools:layout_constraintLeft_creator="1"
-                tools:layout_constraintTop_creator="1" />
+                 />
 
             <EditText
                 android:id="@+id/hit_points_val"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf= "@+id/armor_class_val"
+                app:layout_constraintTop_toBottomOf= "@+id/armor_class"
                 android:layout_marginTop="5dp"
                 android:textColor="#885D4B"
-                android:text = "50"
+                android:textSize="10pt"
+                android:hint = "50"
+                android:imeOptions="actionDone"
                 android:inputType="number"
                 app:layout_constraintLeft_toRightOf="@id/hit_points"
-                tools:layout_constraintLeft_creator="1"
-                tools:layout_constraintTop_creator="1" />
+
+                 />
 
 
 
@@ -97,23 +100,26 @@
                 app:layout_constraintTop_toBottomOf= "@+id/hit_points"
                 android:layout_marginTop="5dp"
                 android:textColor="#885D4B"
-                android:text = "Speed: "
+                android:text= "Speed: "
+                android:textSize="10pt"
                 app:layout_constraintLeft_toLeftOf="parent"
-                tools:layout_constraintLeft_creator="1"
-                tools:layout_constraintTop_creator="1" />
+                />
 
             <EditText
                 android:id="@+id/speed_val"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf= "@+id/hit_points_val"
+                app:layout_constraintTop_toBottomOf= "@+id/hit_points"
+                app:layout_constraintBottom_toTopOf="@id/line2"
                 android:layout_marginTop="5dp"
+                android:textSize="10pt"
                 android:textColor="#885D4B"
-                android:text = "25"
+                android:imeOptions="actionDone"
+                android:hint= "25"
                 android:inputType="number"
+
                 app:layout_constraintLeft_toRightOf="@id/speed"
-                tools:layout_constraintLeft_creator="1"
-                tools:layout_constraintTop_creator="1" />
+                />
 
             <View
                 android:id="@+id/line2"
@@ -205,7 +211,9 @@
                 android:layout_marginTop="5dp"
                 android:inputType="number"
                 android:textColor="#885D4B"
-                android:text = "10"
+                android:hint = "10"
+                android:maxLength="2"
+                android:imeOptions="actionDone"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@+id/stat_dex_val"
                 tools:layout_constraintLeft_creator="1"
@@ -217,7 +225,9 @@
                 app:layout_constraintTop_toBottomOf= "@+id/stat_dex"
                 android:layout_marginTop="5dp"
                 android:textColor="#885D4B"
-                android:text = "10"
+                android:hint = "10"
+                android:maxLength="2"
+                android:imeOptions="actionDone"
                 android:inputType="number"
                 app:layout_constraintRight_toLeftOf="@id/stat_con_val"
                 tools:layout_constraintLeft_creator="1"
@@ -227,7 +237,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf= "@+id/stat_con"
-                android:text = "10"
+                android:hint = "10"
+                android:maxLength="2"
+                android:imeOptions="actionDone"
                 android:inputType="number"
                 android:layout_marginTop="5dp"
                 android:textColor="#885D4B"
@@ -241,7 +253,9 @@
                 app:layout_constraintTop_toBottomOf= "@+id/stat_int"
                 android:layout_marginTop="5dp"
                 android:textColor="#885D4B"
-                android:text = "10"
+                android:hint = "10"
+                android:maxLength="2"
+                android:imeOptions="actionDone"
                 android:inputType="number"
                 app:layout_constraintRight_toLeftOf="@id/stat_wis_val"
                 tools:layout_constraintLeft_creator="1"
@@ -251,10 +265,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf= "@+id/stat_wis"
-                android:text = "10"
+                android:hint = "10"
+                android:imeOptions="actionDone"
                 android:inputType="number"
                 android:layout_marginTop="5dp"
                 android:textColor="#885D4B"
+                android:maxLength="2"
                 app:layout_constraintRight_toLeftOf="@id/stat_cha_val"
                 tools:layout_constraintLeft_creator="1"
                 tools:layout_constraintTop_creator="1" />
@@ -266,91 +282,16 @@
                 app:layout_constraintTop_toBottomOf= "@+id/stat_cha"
                 android:layout_marginTop="5dp"
                 app:layout_constraintRight_toLeftOf="parent"
-                android:text = "10"
+                android:hint = "10"
+                android:imeOptions="actionDone"
+                android:maxLength="2"
                 android:inputType="number"
                 tools:layout_constraintLeft_creator="1"
                 tools:layout_constraintTop_creator="1" />
-            <TextView
-                android:id="@+id/proficiencies"
-                android:layout_width="wrap_content"
-                android:layout_height="85dp"
-                app:layout_constraintTop_toBottomOf= "@+id/stat_str_val"
-                android:layout_marginTop="20dp"
-                android:textColor="#885D4B"
-                android:textStyle="bold"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:text = "Proficiencies:"
-                tools:layout_constraintLeft_creator="1"
-                tools:layout_constraintTop_creator="1" />
-            <TextView
-                android:id="@+id/proficiencies_val"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ellipsize="none"
-                android:maxLines="100"
-                android:scrollHorizontally="false"
-                app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginTop="20dp"
-                app:layout_constraintTop_toBottomOf="@id/proficiencies"
-                android:textColor="#885D4B"
-                android:text = "Acid, Bludgeoning, Cold, Fire, Force, Lightning, Necrotic, Piercing, Poison, Psychic, Radiant, Slashing, Thunder"
-                tools:layout_constraintLeft_creator="1"
-                tools:layout_constraintTop_creator="1" />
-
-            <TextView
-                android:id="@+id/senses"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:textColor="#885D4B"
-                android:textStyle="bold"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/proficiencies_val"
-                android:text = "Senses"
-                tools:layout_constraintLeft_creator="1"
-                tools:layout_constraintTop_creator="1" />
-            <TextView
-                android:id="@+id/senses_val"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf= "@+id/proficiencies_val"
-                app:layout_constraintLeft_toRightOf="@id/senses"
-                app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginTop="25dp"
-                android:textColor="#885D4B"
-                android:text = "blindsight 60ft"
-                tools:layout_constraintLeft_creator="1"
-                tools:layout_constraintTop_creator="1" />
-
-            <TextView
-                android:id="@+id/languages"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#885D4B"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf= "@+id/senses"
-                android:layout_marginTop="25dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:text = "Languages"
-                tools:layout_constraintLeft_creator="1"
-                tools:layout_constraintTop_creator="1" />
-            <TextView
-                android:id="@+id/languages_val"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#885D4B"
-                app:layout_constraintTop_toBottomOf= "@+id/senses_val"
-                android:layout_marginTop="25dp"
-                app:layout_constraintLeft_toRightOf="@+id/languages"
-                android:text = "None"
-                tools:layout_constraintLeft_creator="1"
-                tools:layout_constraintTop_creator="1" />
-
 
             <View
                 android:id="@+id/line3"
-                app:layout_constraintTop_toBottomOf="@+id/challenge_rating_val"
+                app:layout_constraintTop_toBottomOf="@+id/stat_cha_val"
                 android:layout_width="fill_parent"
                 android:layout_height="3dp"
                 android:background="#5b1c1c"/>
@@ -370,13 +311,31 @@
     </ScrollView>
 
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_margin="@dimen/fab_margin"
-        />
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/floatingMenu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        fab:menu_labels_ellipsize="end"
+        fab:menu_labels_singleLine="true"
+        fab:menu_fab_label="Cancel"
+        fab:menu_backgroundColor="#ccffffff"
+        fab:menu_animationDelayPerItem="0"
+        fab:menu_colorNormal="#00C29F"
+        fab:menu_colorPressed="#00C29F"
+        fab:menu_colorRipple="#00C29F"
+        android:padding="8dp">
+
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/add_character_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/fab_add"
+            fab:fab_size="mini"
+            fab:fab_label="Add Character"/>
+
+    </com.github.clans.fab.FloatingActionMenu>
 
 </android.support.constraint.ConstraintLayout>

@@ -2,62 +2,48 @@ package com.brentonedwards.dmassist;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static com.brentonedwards.dmassist.EncountersActivity.db;
+
+
 public class CreateCharacter extends AppCompatActivity {
 
 
     List<TextView> statBlockViews;
+    List<EditText> statBlockValViews;
     View someView;
     View rootView;
-    FloatingActionButton addButton;
+    com.github.clans.fab.FloatingActionButton addButton;
     TextView statBlockStr;
     TextView statBlockDex;
     TextView statBlockCon;
     TextView statBlockInt;
     TextView statBlockWis;
     TextView statBlockCha;
-    TextView conditionalImmunities;
-    TextView proficiencies;
     TextView senses;
-    TextView challengeRating;
     TextView languages;
-    TextView charNameTextView;
-    TextView charSubNameTextView;
-    TextView charArmorClassTextView;
-    TextView charHitPointsTextView;
-    TextView charSpeedTextView;
-    TextView statBlockStrValTextView;
-    TextView statBlockDexValTextView;
-    TextView statBlockConValTextView;
-    TextView statBlockIntValTextView;
-    TextView statBlockWisValTextView;
-    TextView statBlockChaValTextView;
-    TextView conditionalImmunitiesValTextView;
-    TextView damageImmunitiesValTextView;
-    TextView sensesValTextView;
-    TextView languagesValTextView;
-    TextView challengeRatingValTextView;
-    TextView actionValTextView;
-    TextView specialAbilitiesValTextView;
-    StringBuilder abilityTextBuilder;
-    StringBuilder actionTextBuilder;
-    String actionText = "";
-    String abilityText = "";
+    EditText charSpeedTextView;
+    EditText statBlockStrValEditText;
+    EditText statBlockDexValEditText;
+    EditText statBlockConValEditText;
+    EditText statBlockIntValEditText;
+    EditText statBlockWisValEditText;
+    EditText statBlockChaValEditText;
+    EditText characterNameEditText;
+    EditText armorClassEditText;
+    EditText healthEditText;
     public int width;
     int itemSelected;
-    int index = 0;
 
 
     @Override
@@ -67,7 +53,7 @@ public class CreateCharacter extends AppCompatActivity {
         someView = findViewById(R.id.character_name);
         rootView = someView.getRootView();
         rootView.setBackgroundColor(getResources().getColor(R.color.colorBackground));
-        addButton = findViewById(R.id.fab);
+        addButton = findViewById(R.id.add_character_button);
         itemSelected = getIntent().getIntExtra("Value", 0);
         statBlockStr = rootView.findViewById(R.id.stat_str);
         statBlockDex = rootView.findViewById(R.id.stat_dex);
@@ -75,100 +61,67 @@ public class CreateCharacter extends AppCompatActivity {
         statBlockInt = rootView.findViewById(R.id.stat_int);
         statBlockWis = rootView.findViewById(R.id.stat_wis);
         statBlockCha = rootView.findViewById(R.id.stat_cha);
-        proficiencies = rootView.findViewById(R.id.proficiencies);
-        senses = rootView.findViewById(R.id.senses);
-        languages = rootView.findViewById(R.id.languages);
 
 
-        /*
-         * TextViews with character data
-         */
-//        CharacterData selectedChar = EncountersActivity.db.characterDao().findCharacterDataByUid(itemSelected);
-//
-//        charNameTextView = rootView.findViewById(R.id.character_name);
-//        charNameTextView.setText(selectedChar.getCharName());
-//
-//        charSubNameTextView = rootView.findViewById(R.id.sub_name);
-//        charSubNameTextView.setText(selectedChar.getSize() + " " + selectedChar.getType() + " " + selectedChar.getAlignment());
-//
-//        charArmorClassTextView = rootView.findViewById(R.id.armor_class_val);
-//        charArmorClassTextView.setText(String.valueOf(selectedChar.getArmorClass()));
-//
-//        charHitPointsTextView = rootView.findViewById(R.id.hit_points_val);
-//        charHitPointsTextView.setText(String.valueOf(selectedChar.getHitPoints()));
-//
         charSpeedTextView = rootView.findViewById(R.id.speed_val);
 
-        statBlockStrValTextView = rootView.findViewById(R.id.stat_str_val);
+        statBlockStrValEditText = rootView.findViewById(R.id.stat_str_val);
 
 
-        statBlockDexValTextView = rootView.findViewById(R.id.stat_dex_val);
+        statBlockDexValEditText = rootView.findViewById(R.id.stat_dex_val);
 
 
-        statBlockConValTextView = rootView.findViewById(R.id.stat_con_val);
+        statBlockConValEditText = rootView.findViewById(R.id.stat_con_val);
 
 
-        statBlockIntValTextView = rootView.findViewById(R.id.stat_int_val);
+        statBlockIntValEditText = rootView.findViewById(R.id.stat_int_val);
 
 
-        statBlockWisValTextView = rootView.findViewById(R.id.stat_wis_val);
+        statBlockWisValEditText = rootView.findViewById(R.id.stat_wis_val);
 
 
-        statBlockChaValTextView = rootView.findViewById(R.id.stat_cha_val);
+        statBlockChaValEditText = rootView.findViewById(R.id.stat_cha_val);
 
-//        conditionalImmunitiesValTextView = rootView.findViewById(R.id.condition_immunities_val);
-//        conditionalImmunitiesValTextView.setText(selectedChar.getConditionImmunities());
-//
-//
-//        damageImmunitiesValTextView = rootView.findViewById(R.id.damage_immunities_val);
-//        damageImmunitiesValTextView.setText(selectedChar.getDamageImmunities());
-//
-//
-//        sensesValTextView = rootView.findViewById(R.id.senses_val);
-//        sensesValTextView.setText(String.valueOf(selectedChar.senses));
-//
-//
-//        languagesValTextView = rootView.findViewById(R.id.languages_val);
-//        languagesValTextView.setText(String.valueOf(selectedChar.getLanguages()));
-//
-//
-//        challengeRatingValTextView = rootView.findViewById(R.id.challenge_rating_val);
-//        challengeRatingValTextView.setText(String.valueOf(selectedChar.getChallengeRating()));
-//
-//
-//        specialAbilitiesValTextView = rootView.findViewById(R.id.special_abilities_val);
-//        specialAbilitiesValTextView.setText(buildSpecialAbilitiesString(selectedChar));
-//
-//        actionValTextView = rootView.findViewById(R.id.actions_val);
-//
-//
-//        actionValTextView.setText(buildActionString(selectedChar));
-//
-//
-//
+        characterNameEditText = rootView.findViewById(R.id.character_name);
+
+        armorClassEditText = rootView.findViewById(R.id.armor_class_val);
+
+        healthEditText = rootView.findViewById(R.id.hit_points_val);
+
+
+
+
         width = getScreenWidth();
-//
-//
-//        challengeRating.setWidth(width / 2);
-//        challengeRatingValTextView.setWidth(width / 2);
-//        languages.setWidth(width / 2);
-//        languagesValTextView.setWidth(width / 2);
-//        senses.setWidth(width / 2);
-//        sensesValTextView.setWidth(width / 2);
-//        damageImmunitiesValTextView.setWidth(width / 2);
-//        damageImmunities.setWidth(width / 2);
-//        conditionalImmunities.setWidth(width / 2);
-//        conditionalImmunitiesValTextView.setWidth(width / 2);
-//
         statBlockViews = Arrays.asList(statBlockStr, statBlockDex, statBlockCon, statBlockInt, statBlockWis, statBlockCha);
-        setEvenWidth(statBlockViews, width);
-        statBlockViews = Arrays.asList(statBlockStrValTextView, statBlockDexValTextView, statBlockConValTextView, statBlockIntValTextView, statBlockWisValTextView, statBlockChaValTextView);
-        setEvenWidth(statBlockViews, width);
+        setEvenTextViewWidth(statBlockViews, width);
+        statBlockValViews = Arrays.asList(statBlockStrValEditText, statBlockDexValEditText, statBlockConValEditText, statBlockIntValEditText, statBlockWisValEditText, statBlockChaValEditText);
+        setEvenEditTextWidth(statBlockValViews, width);
 
         addButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
+                EncounterCharacter character = new EncounterCharacter();
+                character.setName(String.valueOf(characterNameEditText.getText()));
+                character.setArmorClass(Integer.valueOf(armorClassEditText.getText().toString()));
+                character.setCharacterSheetIndex(db.characterDao().countCharacterData()+1);
+                db.characterDao().insertAll(character);
+
+                CharacterData characterData = new CharacterData();
+
+                characterData.setCharName(characterNameEditText.getText().toString());
+                characterData.setStrength(Integer.valueOf(statBlockStrValEditText.getText().toString()));
+                characterData.setDexterity(Integer.valueOf(statBlockDexValEditText.getText().toString()));
+                characterData.setConstitution(Integer.valueOf(statBlockConValEditText.getText().toString()));
+                characterData.setIntelligence(Integer.valueOf(statBlockIntValEditText.getText().toString()));
+                characterData.setWisdom(Integer.valueOf(statBlockWisValEditText.getText().toString()));
+                characterData.setCharisma(Integer.valueOf(statBlockChaValEditText.getText().toString()));
+
+
+                db.characterDao().insertAll(characterData);
+
+
+
                 Intent myIntent = new Intent(CreateCharacter.this, EncountersActivity.class);
-                myIntent.putExtra("index", itemSelected);
                 startActivity(myIntent);
 
 
@@ -202,78 +155,34 @@ public class CreateCharacter extends AppCompatActivity {
     }
 
     //Sets Views to be an even width
-    public void setEvenWidth(List<TextView> viewList, int screenWidth) {
+    public void setEvenTextViewWidth(List<TextView> viewList, int screenWidth) {
         int index = 0;
-        while (index <= statBlockViews.size() - 1) {
-            statBlockViews.get(index).setWidth(width / viewList.size());
+        while (index <= viewList.size() - 1) {
+            viewList.get(index).setWidth(screenWidth / viewList.size());
 
             index++;
         }
 
     }
 
-    //Methods for building the string for the Actions section
-    public String buildActionString(CharacterData selectedChar) {
-        index=0;
-        while (index < selectedChar.getActions().size()) {
-            if (index == 0) {
-                actionTextBuilder = new StringBuilder("Name: " + selectedChar.getActions().get(index).getName() + "\n");
-                actionTextBuilder.append("Attack Bonus: " + selectedChar.getActions().get(index).getAttackBonus() + "\n");
-                actionTextBuilder.append("Damage Bonus:" + selectedChar.getActions().get(index).getDamageBonus() + "\n");
-                actionTextBuilder.append("Dice: " + selectedChar.getActions().get(index).getDamageDice() + "\n" + "\n");
-                actionTextBuilder.append("Description:\n" + selectedChar.getActions().get(index).getDesc() + "\n");
-            } else {
 
-                actionTextBuilder.append("\n" + "\n" + "Name: " + selectedChar.getActions().get(index).getName() + "\n");
-                actionTextBuilder.append("Attack Bonus: " + selectedChar.getActions().get(index).getAttackBonus() + "\n");
-                actionTextBuilder.append("Damage Bonus:" + selectedChar.getActions().get(index).getDamageBonus() + "\n");
-                actionTextBuilder.append("Dice: " + selectedChar.getActions().get(index).getDamageDice() + "\n" + "\n");
-                actionTextBuilder.append("Description:\n" + selectedChar.getActions().get(index).getDesc() + "\n");
+    public void setEvenEditTextWidth(List<EditText> viewList, int screenWidth) {
+        int index = 0;
+        while (index <= viewList.size() - 1) {
+            viewList.get(index).setWidth(screenWidth / viewList.size());
 
-            }
             index++;
-            if (index == selectedChar.getActions().size()) {
-                return actionText = actionTextBuilder.toString();
-            }
-
         }
-        return "None";
+
     }
 
-
-    //Methods for building the string for the Special Abilities section
-    public String buildSpecialAbilitiesString(CharacterData selectedChar){
-        index =0;
-        if (selectedChar.getSpecialAbilities() != null) {
-            while (index < selectedChar.getSpecialAbilities().size()) {
-
-                if (index == 0) {
-                    abilityTextBuilder = new StringBuilder("Name: " + selectedChar.getSpecialAbilities().get(index).getName() + "\n");
-                    abilityTextBuilder.append("Attack Bonus: " + selectedChar.getSpecialAbilities().get(index).getAttackBonus() + "\n" + "\n");
-                    abilityTextBuilder.append("Description:\n" + selectedChar.getSpecialAbilities().get(index).getDesc() + "\n");
-                } else {
-
-                    abilityTextBuilder.append("\n" + "\n" + "Name: " + selectedChar.getSpecialAbilities().get(index).getName() + "\n");
-                    abilityTextBuilder.append("Attack Bonus: " + selectedChar.getSpecialAbilities().get(index).getAttackBonus() + "\n" + "\n");
-                    abilityTextBuilder.append("Description:\n" + selectedChar.getSpecialAbilities().get(index).getDesc() + "\n");
-
-                }
-                index++;
-            }
-
-            if (index == selectedChar.getSpecialAbilities().size()) {
-                return abilityTextBuilder.toString();
-            }
-        } else {
-            return "None";
-        }
-        return "None";
-    }
 
     public int getScreenWidth(){
         //Get display information to set width of views
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         return displayMetrics.widthPixels;
+
     }
+
 }

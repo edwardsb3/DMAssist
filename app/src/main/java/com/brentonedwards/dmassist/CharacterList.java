@@ -40,6 +40,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
+import static com.brentonedwards.dmassist.EncountersActivity.db;
+
 public class CharacterList extends AppCompatActivity {
 
     EditText searchBar;
@@ -67,24 +69,16 @@ public class CharacterList extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
                     //do what you want on the press of 'done'
-                    searchResult.add(EncountersActivity.db.characterDao().findByName(String.valueOf(searchBar.getText())));
+
                     adapter = null;
-//                    listView.setAdapter(new CharacterListAdapter(searchResult, root.getContext()));
+                    listView.setAdapter(new CharacterListAdapter(db.characterDao().searchforContainedString(searchBar.getText().toString()+"%"), root.getContext()));
                 }
                 return false;
             }
         });
 
 
-            Collections.sort(EncountersActivity.characterData, new Comparator<CharacterData>() {
-                @Override
-                public int compare(CharacterData characterData, CharacterData t1) {
-
-                    return characterData.charName.compareTo(t1.charName);
-                }
-            });
-
-        adapter = new CharacterListAdapter(EncountersActivity.db.characterDao().getAllCharacterData(), getApplicationContext());
+        adapter = new CharacterListAdapter(db.characterDao().getAllCharacterData(), getApplicationContext());
 
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

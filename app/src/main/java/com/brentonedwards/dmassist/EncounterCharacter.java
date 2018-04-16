@@ -14,6 +14,16 @@ public class EncounterCharacter {
     @ColumnInfo(name = "name")
     String name;
 
+    @ColumnInfo(name = "player_character")
+    boolean isPlayerCharacter;
+
+    @ColumnInfo(name = "armor_class")
+    int armorClass;
+
+    @ColumnInfo(name = "health")
+    int health;
+
+
     @ColumnInfo(name = "character_sheet_index")
     int characterSheetIndex;
 
@@ -43,11 +53,15 @@ public class EncounterCharacter {
     boolean restrained;
     @ColumnInfo(name = "stunned")
     boolean stunned;
+
     @Ignore
     public EncounterCharacter() {
 
-        this.index = 0;
+
+        this.isPlayerCharacter = true;
         this.name = "Bilmy";
+        this.health = 100;
+        this.armorClass = 10;
         this.characterSheetIndex = 0;
         this.initiative =0;
         this.blinded = false;
@@ -66,8 +80,11 @@ public class EncounterCharacter {
 
     public EncounterCharacter(String name, int characterSheetIndex) {
 
+        this.isPlayerCharacter = false;
         this.name = name;
+        this.health = 100;
         this.characterSheetIndex = characterSheetIndex;
+        this.armorClass = 10;
         this.initiative =0;
         this.blinded = false;
         this.charmed = false;
@@ -111,6 +128,22 @@ public class EncounterCharacter {
     }
 
     public void setCharacterSheet(int characterSheetIndex) {
+        this.characterSheetIndex = characterSheetIndex;
+    }
+
+    public boolean isPlayerCharacter() {
+        return isPlayerCharacter;
+    }
+
+    public void setPlayerCharacter(boolean playerCharacter) {
+        isPlayerCharacter = playerCharacter;
+    }
+
+    public int getCharacterSheetIndex() {
+        return characterSheetIndex;
+    }
+
+    public void setCharacterSheetIndex(int characterSheetIndex) {
         this.characterSheetIndex = characterSheetIndex;
     }
 
@@ -218,4 +251,19 @@ public class EncounterCharacter {
         this.stunned = stunned;
     }
 
+    public int getArmorClass() {
+        return armorClass;
+    }
+
+    public void setArmorClass(int armorClass) {
+        this.armorClass = armorClass;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
 }

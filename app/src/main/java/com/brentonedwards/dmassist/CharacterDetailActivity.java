@@ -90,6 +90,7 @@ public class CharacterDetailActivity extends AppCompatActivity {
         /*
          * TextViews with character data
          */
+
         CharacterData selectedChar = EncountersActivity.db.characterDao().findCharacterDataByUid(itemSelected);
 
         charNameTextView = rootView.findViewById(R.id.character_name);
@@ -230,6 +231,7 @@ public class CharacterDetailActivity extends AppCompatActivity {
     //Methods for building the string for the Actions section
     public String buildActionString(CharacterData selectedChar) {
             index=0;
+    if(selectedChar.getActions() != null){
         while (index < selectedChar.getActions().size()) {
             if (index == 0) {
                 actionTextBuilder = new StringBuilder("Name: " + selectedChar.getActions().get(index).getName() + "\n");
@@ -252,6 +254,7 @@ public class CharacterDetailActivity extends AppCompatActivity {
             }
 
         }
+    }
         return "None";
     }
 

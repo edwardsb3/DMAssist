@@ -2,15 +2,20 @@ package com.brentonedwards.dmassist;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverter;
 import android.arch.persistence.room.TypeConverters;
+import android.support.annotation.NonNull;
 
 import com.brentonedwards.dmassist.util.Action;
 import com.brentonedwards.dmassist.util.SpecialAbility;
 
 import java.sql.Array;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Created by Brenton Edwards 3/20/2018
@@ -69,6 +74,36 @@ public class CharacterData {
     @ColumnInfo(name = "actions") @TypeConverters(CharacterDataTypeConverters.class)
     List<Action> actions;
 
+    public CharacterData(){
+
+        this.charName = "Bilmy";
+        this.size = "medium";
+        this.type = "human";
+        this.subtype = "humanoid";
+        this.alignment = "neutral";
+        this.armorClass = 10;
+        this.hitPoints = 50;
+        this.hitDice = "12";
+        this.speed = "25";
+        this.strength = 10;
+        this.dexterity = 10;
+        this.constitution = 10;
+        this.wisdom = 10;
+        this.intelligence = 10;
+        this.charisma = 10;
+        this.damageVulnerabilities = "None";
+        this.damageResistances = "None";
+        this.damageImmunities = "None";
+        if(conditionImmunities!="") {this.conditionImmunities = conditionImmunities;}
+        else{this.conditionImmunities="None";}
+        this.senses = "Normal sight";
+        this.languages = "Common";
+        this.challengeRating = 0;
+        this.specialAbilities = null;
+        this.actions = null;
+
+    }
+
     public CharacterData(String charName, String size, String type, String subtype, String alignment, int armorClass, int hitPoints, String hitDice, String speed, int strength, int dexterity, int constitution, int wisdom, int intelligence, int charisma, String damageVulnerabilities, String damageResistances, String damageImmunities, String conditionImmunities, String senses, double challengeRating, String languages, List<SpecialAbility> specialAbilities, List<Action> actions) {
 
         this.charName = charName;
@@ -99,7 +134,7 @@ public class CharacterData {
     }
 
 
-
+    @Ignore
     public String getCharName() {
         return charName;
     }
@@ -265,9 +300,6 @@ public class CharacterData {
         return challengeRating;
     }
 
-    public void setChallengeRating(int challengeRating) {
-        this.challengeRating = challengeRating;
-    }
 
     public String getLanguages() {
         return languages;

@@ -30,6 +30,9 @@ public interface CharacterDao {
     @Query("SELECT * FROM character WHERE `index` = :index")
     EncounterCharacter findEncounterCharacterByUid(int index);
 
+    @Query("SELECT * FROM character_data WHERE name LIKE :searchString")
+    List<CharacterData> searchforContainedString(String searchString);
+
     @Query("SELECT COUNT(*) from character")
     int countCharacters();
 
@@ -38,6 +41,9 @@ public interface CharacterDao {
 
     @Query("UPDATE character SET initiative = :initiative  WHERE `index` = :index")
             int updateInitiative(int index, int initiative);
+
+    @Query("SELECT * FROM character ORDER BY initiative DESC")
+    List<EncounterCharacter> initiativeList();
 
     @Insert
     void insertAll(CharacterData... characters_data);
