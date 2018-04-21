@@ -334,7 +334,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/fab_add"
             fab:fab_size="mini"
-            fab:fab_label="Add Character"/>
+            fab:fab_label="Save Character"/>
 
     </com.github.clans.fab.FloatingActionMenu>
 

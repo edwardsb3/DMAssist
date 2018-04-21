@@ -45,6 +45,11 @@ public interface CharacterDao {
     @Query("SELECT * FROM character ORDER BY initiative DESC")
     List<EncounterCharacter> initiativeList();
 
+    @Query("SELECT * FROM character_data WHERE uid > 325")
+    List<CharacterData> fetchUserCreatedData();
+
+    @Query("DELETE FROM character")
+    void deleteAllEncounterCharacters();
     @Insert
     void insertAll(CharacterData... characters_data);
 
@@ -53,4 +58,6 @@ public interface CharacterDao {
 
     @Delete
     void delete(EncounterCharacter character);
+
+
 }

@@ -1,12 +1,11 @@
 package com.brentonedwards.dmassist;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.AssetManager;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -15,44 +14,31 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
-import android.widget.AutoCompleteTextView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
 
 import com.brentonedwards.dmassist.adapter.CharacterListAdapter;
-import com.brentonedwards.dmassist.util.GsonParse;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
+import java.util.List;
 
 import static com.brentonedwards.dmassist.EncountersActivity.db;
 
 public class CharacterList extends AppCompatActivity {
 
+    public static Handler characterListHandler;
     EditText searchBar;
-    ListView listView;
+    ListView characterListView;
     View root;
     ArrayList<EncounterCharacter> searchResult = new ArrayList<>();
     private static CharacterListAdapter adapter;
+    Thread dbQueryThread = new Thread();
+    List<CharacterData> nonPlayerCreatedList = EncountersActivity.nonPlayerCreatedMonstersList;
 
-    View mainScreen;
-    int index = 0;
-
+    @SuppressLint("HandlerLeak")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,31 +48,52 @@ public class CharacterList extends AppCompatActivity {
         root = someView.getRootView();
         root.setBackgroundColor(getResources().getColor(R.color.colorBackground));
         searchBar = findViewById(R.id.search_bar);
-           listView = (ListView) findViewById(R.id.list);
+        characterListView = findViewById(R.id.list);
+
+        if(nonPlayerCreatedList != null) {
+            adapter = new CharacterListAdapter(EncountersActivity.nonPlayerCreatedMonstersList, getApplicationContext());
+            characterListView.setAdapter(adapter);
+
+        }
+        characterListHandler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                adapter = new CharacterListAdapter(EncountersActivity.nonPlayerCreatedMonstersList, getApplicationContext());
+                characterListView.setAdapter(adapter);
+            }
+        };
+
+
 
 
         searchBar.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                    //do what you want on the press of 'done'
 
-                    adapter = null;
-                    listView.setAdapter(new CharacterListAdapter(db.characterDao().searchforContainedString(searchBar.getText().toString()+"%"), root.getContext()));
+                    dbQueryThread = new Thread() {
+
+                        public void run() {
+                            adapter = null;
+                            characterListView.setAdapter(new CharacterListAdapter(db.characterDao().searchforContainedString(searchBar.getText().toString()+"%"), root.getContext()));
+
+
+
+                        }
+                    };
+                    dbQueryThread.run();
+
                 }
                 return false;
             }
         });
 
 
-        adapter = new CharacterListAdapter(db.characterDao().getAllCharacterData(), getApplicationContext());
-
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        characterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent myIntent = new Intent(CharacterList.this, CharacterDetailActivity.class);
-                myIntent.putExtra("Value", position);
+                myIntent.putExtra("Value", position+1);
                 CharacterList.this.startActivity(myIntent);
             }
         });

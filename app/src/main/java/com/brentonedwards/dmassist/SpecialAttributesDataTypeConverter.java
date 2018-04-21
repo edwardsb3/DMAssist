@@ -2,7 +2,6 @@ package com.brentonedwards.dmassist;
 
 import android.arch.persistence.room.TypeConverter;
 
-import com.brentonedwards.dmassist.util.Action;
 import com.brentonedwards.dmassist.util.SpecialAbility;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

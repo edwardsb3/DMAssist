@@ -6,12 +6,6 @@ public class PlayerEncounterCharacter extends EncounterCharacter {
     String charClass;
     String race;
 
-//    public PlayerEncounterCharacter(int index, String name, CharacterData characterSheet, int level, String charClass, String race) {
-//        super(index, name, characterSheet);
-//        this.level = level;
-//        this.charClass = charClass;
-//        this.race = race;
-//    }
 
     public int getLevel() {
         return level;

@@ -87,9 +87,9 @@ public class EncounterListAdapter extends ArrayAdapter<EncounterCharacter> imple
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        EncounterCharacter encounterCharacterIndex = getItem(position);
+        final EncounterCharacter encounterCharacterIndex = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
-        ViewHolder viewHolder; // view lookup cache stored in tag
+        final ViewHolder viewHolder; // view lookup cache stored in tag
 
         final View result;
 
@@ -104,11 +104,6 @@ public class EncounterListAdapter extends ArrayAdapter<EncounterCharacter> imple
             viewHolder.initiativeTextView = convertView.findViewById(R.id.initiative);
             viewHolder.armorClassImageView = convertView.findViewById(R.id.armor_class_image);
             viewHolder.nameTextView.setWidth(width/2);
-//            viewHolder.armorClassImageView.setMinimumWidth(viewHolder.armorClassTextView.getWidth());
-//            viewHolder.armorClassImageView.setMinimumHeight(viewHolder.armorClassTextView.getHeight());
-//            viewHolder.hitPointsTextView.setWidth(width/6);
-//            viewHolder.armorClassTextView.setWidth(width/6);
-//            viewHolder.initiativeTextView.setWidth(width/6);
             result=convertView;
 
             convertView.setTag(viewHolder);
@@ -122,10 +117,19 @@ public class EncounterListAdapter extends ArrayAdapter<EncounterCharacter> imple
         lastPosition = position;
 
 
-        viewHolder.nameTextView.setText(db.characterDao().findCharacterDataByUid(encounterCharacterIndex.getCharacterSheetIndex()).getCharName());
-        viewHolder.armorClassTextView.setText(String.valueOf(db.characterDao().findCharacterDataByUid(encounterCharacterIndex.getCharacterSheetIndex()).getArmorClass()));
-        viewHolder.hitPointsTextView.setText(String.valueOf(db.characterDao().findCharacterDataByUid(encounterCharacterIndex.getCharacterSheetIndex()).getHitPoints()));
-        viewHolder.initiativeTextView.setText(String.valueOf(db.characterDao().findEncounterCharacterByUid(encounterCharacterIndex.getIndex()).getInitiative()));
+
+        Thread dbQueryThread = new Thread() {
+
+            public void run() {
+                viewHolder.nameTextView.setText(db.characterDao().findCharacterDataByUid(encounterCharacterIndex.getCharacterSheetIndex()).getCharName());
+                viewHolder.armorClassTextView.setText(String.valueOf(db.characterDao().findCharacterDataByUid(encounterCharacterIndex.getCharacterSheetIndex()).getArmorClass()));
+                viewHolder.hitPointsTextView.setText(String.valueOf(db.characterDao().findCharacterDataByUid(encounterCharacterIndex.getCharacterSheetIndex()).getHitPoints()));
+                viewHolder.initiativeTextView.setText(String.valueOf(db.characterDao().findEncounterCharacterByUid(encounterCharacterIndex.getIndex()).getInitiative()));
+
+
+            }
+        };
+        dbQueryThread.run();
         // Return the completed view to render on screen
         return convertView;
     }

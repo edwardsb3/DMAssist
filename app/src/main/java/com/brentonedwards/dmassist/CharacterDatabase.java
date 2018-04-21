@@ -18,9 +18,8 @@ public abstract class CharacterDatabase extends RoomDatabase {
             if (INSTANCE == null) {
                 INSTANCE =
                         Room.databaseBuilder(context.getApplicationContext(), CharacterDatabase.class, "character-database")
-                                // allow queries on the main thread.
-                                // Don't do this on a real app! See PersistenceBasicSample for an example.
-                                .allowMainThreadQueries()
+
+                          //      .allowMainThreadQueries()
                                 .build();
             }
             return INSTANCE;
