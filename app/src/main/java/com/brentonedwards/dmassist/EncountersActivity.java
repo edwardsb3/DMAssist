@@ -13,8 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -35,6 +33,9 @@ import java.util.Random;
 public class EncountersActivity extends AppCompatActivity {
 
     public static ArrayList<EncounterCharacter> encounterCharacters;
+    public static List<EncounterCharacter> encounterCharacterList;
+    public static ArrayList<CharacterData> nonPlayerCreatedMonstersArrayList = new ArrayList<CharacterData>();
+    public static List<CharacterData> nonPlayerCreatedMonstersList;
     ListView listView;
     public static CharacterDatabase db;
     private EncounterListAdapter adapter;
@@ -46,16 +47,13 @@ public class EncountersActivity extends AppCompatActivity {
     com.github.clans.fab.FloatingActionButton clearListButton;
     Thread dbQueryThread;
     public GsonParse[] nonPlayerCreatedMonsters;
-    public static ArrayList<CharacterData> nonPlayerCreatedMonstersArrayList = new ArrayList<CharacterData>();
-    public static List<CharacterData> nonPlayerCreatedMonstersList;
     private Boolean firstTime = null;
-    Handler dbDataHandler;
+    Handler encounterActivityHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        if(savedInstanceState==null) {
             db = Room.databaseBuilder(getApplicationContext(),
                     CharacterDatabase.class, "character-database").build();
 
@@ -70,8 +68,7 @@ public class EncountersActivity extends AppCompatActivity {
             clearListButton = findViewById(R.id.clear_list);
             listView = findViewById(R.id.encounter_list);
 
-            if(isFirstTime()) {
-
+            if (isFirstTime()) {
 
                 try {
                     AssetManager assetManager = getAssets();
@@ -83,13 +80,16 @@ public class EncountersActivity extends AppCompatActivity {
                     nonPlayerCreatedMonsters = gson.fromJson(reader, GsonParse[].class);
 
 
-
-
                     @SuppressLint("HandlerLeak")
-                    final Handler handler = new Handler(){
+                    final Handler encounterActivityHandler = new Handler(){
                         @Override
                         public void handleMessage(Message msg) {
-                            listView.setAdapter(adapter);
+                            adapter = null;
+                            if(encounterCharacterList!=null) {
+                                adapter = new EncounterListAdapter(encounterCharacterList, getApplicationContext(), width);
+                                listView = findViewById(R.id.encounter_list);
+                                listView.setAdapter(adapter);
+                            }
                         }
                     };
 
@@ -104,10 +104,11 @@ public class EncountersActivity extends AppCompatActivity {
                                 index++;
                             }
                             nonPlayerCreatedMonstersList = nonPlayerCreatedMonstersArrayList;
+                            adapter = null;
                             adapter = new EncounterListAdapter(db.characterDao().getAllEncounterCharacters(), getApplicationContext(), width);
-                            handler.sendEmptyMessage(0);
+                            encounterActivityHandler.sendEmptyMessage(0);
 
-                            if(CharacterList.characterListHandler != null){
+                            if (CharacterList.characterListHandler != null) {
                                 CharacterList.characterListHandler.sendEmptyMessage(0);
                             }
 
@@ -125,76 +126,121 @@ public class EncountersActivity extends AppCompatActivity {
                 }
 
 
-            }
-            else {
-                Runnable dbQuery = new Runnable(){
+            } else {
+
+
+                @SuppressLint("HandlerLeak")
+                final Handler initList = new Handler(){
+
                     @Override
-                    public void run() {
-                    Log.d("myAlert", "We got here");
-                        nonPlayerCreatedMonstersList = db.characterDao().getAllCharacterData();
-                        if(CharacterList.characterListHandler != null) {
-                            CharacterList.characterListHandler.sendEmptyMessage(0);
+                    public void handleMessage(Message msg) {
+                        if(encounterCharacterList != null) {
+                            adapter = null;
+                            adapter = new EncounterListAdapter(encounterCharacterList, getApplicationContext(), getScreenWidth());
+                            listView.setAdapter(adapter);
                         }
                     }
                 };
+                Runnable dataPull = new Runnable() {
+                    @Override
+                    public void run() {
 
-                dbQueryThread = new Thread(dbQuery);
-                dbQueryThread.start();
+                        nonPlayerCreatedMonstersList = db.characterDao().getAllCharacterData();
+                        encounterCharacterList = db.characterDao().getAllEncounterCharacters();
+//                        setIncrementingIndex(encounterCharacterList);
+                        if (CharacterList.characterListHandler != null) {
+                            CharacterList.characterListHandler.sendEmptyMessage(0);
+                        }
+                        initList.sendEmptyMessage(0);
+                    }
+                };
+
+                Thread dbPullThread = new Thread(dataPull);
+                dbPullThread.start();
             }
 
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        final int itemSelected = position;
-                        final Intent myIntent = new Intent(EncountersActivity.this, CharacterDetailActivity.class);
-                        dbQueryThread = new Thread() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    final int itemSelected = position;
 
-                            public void run() {
 
-                                if (!db.characterDao().findEncounterCharacterByUid(itemSelected + 1).isPlayerCharacter) {
-                                    myIntent.putExtra("Value", itemSelected);
-                                } else {
-                                    myIntent.putExtra("Value", db.characterDao().findEncounterCharacterByUid(itemSelected + 1).getCharacterSheetIndex());
+                    @SuppressLint("HandlerLeak") final Handler detailHandler = new Handler(){
+
+                        @Override
+                        public void handleMessage(Message msg) {
+                            Intent myIntent= new Intent();
+
+                            //is not player
+                            if(msg.arg1 == 0) {
+                                myIntent = new Intent(EncountersActivity.this, CharacterDetailActivity.class);
                                 }
-
-
+                                //is player
+                            if(msg.arg1 == 1) {
+                                myIntent = new Intent(EncountersActivity.this, CreateCharacter.class);
                             }
-                        };
 
-                        dbQueryThread.run();
-                        EncountersActivity.this.startActivity(myIntent);
+                            EncountersActivity.this.startActivity(myIntent);
 
-                    }
-                });
 
+                        }
+                    };
+
+
+                    Runnable dbNavigationQuery = new Runnable() {
+
+                        public void run() {
+                            Message isPlayer = new Message();
+
+                            EncounterCharacter selectedCharacter = db.characterDao().findEncounterCharacterByIndex(itemSelected);
+                            if(selectedCharacter.isPlayerCharacter){isPlayer.arg1 = 1;}
+                            else{isPlayer.arg1 = 0;}
+                        detailHandler.sendEmptyMessage(0);
+                        }
+                    };
+                    Thread dbNavQueryThread = new Thread(dbNavigationQuery);
+                    dbNavQueryThread.run();
+
+
+                }
+            });
 
 
             addMonsterButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
 
 
-
-            Intent myIntent = new Intent(EncountersActivity.this, CharacterList.class);
-            EncountersActivity.this.startActivity(myIntent);
+                    Intent myIntent = new Intent(EncountersActivity.this, CharacterList.class);
+                    EncountersActivity.this.startActivity(myIntent);
 
                 }
             });
             clearListButton.setOnClickListener(new View.OnClickListener() {
+                @SuppressLint("HandlerLeak")
+                Handler handler = new Handler(){
+
+                    @Override
+                    public void handleMessage(Message msg) {
+
+
+                        listView.setAdapter(adapter);
+                    }
+                };
                 public void onClick(View v) {
-                    dbQueryThread = new Thread() {
+                    Runnable dbDeleteQuery = new Runnable() {
 
                         public void run() {
-                        db.characterDao().deleteAllEncounterCharacters();
-                        adapter = null;
-                        adapter = new EncounterListAdapter(db.characterDao().getAllEncounterCharacters(), getApplicationContext(), width);
+                            db.characterDao().deleteAllEncounterCharacters();
+                            encounterCharacterList = null;
+                            adapter = null;
+                            adapter = new EncounterListAdapter(db.characterDao().getAllEncounterCharacters(), getApplicationContext(), width);
+                            handler.sendEmptyMessage(0);
+
                         }
                     };
-                    dbQueryThread.run();
-                    listView.setAdapter(adapter);
-
-
-
+                    Thread dbDeleteThread = new Thread(dbDeleteQuery);
+                    dbDeleteThread.start();
 
 
                 }
@@ -202,31 +248,45 @@ public class EncountersActivity extends AppCompatActivity {
             rollInitiativeButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
 
-                    dbQueryThread = new Thread() {
+                    @SuppressLint("HandlerLeak") final Handler handleInitiative = new Handler(){
+
+                        @Override
+                        public void handleMessage(Message msg) {
+
+                            adapter = null;
+                            adapter = new EncounterListAdapter(encounterCharacterList, getApplicationContext(), getScreenWidth());
+                            listView.setAdapter(adapter);
+                        }
+                    };
+
+                    Runnable dbUpdateInitiative = new Runnable() {
 
                         public void run() {
 
-                            encounterCharacters.clear();
-                            encounterCharacters.addAll(db.characterDao().getAllEncounterCharacters());
+
+                            ArrayList<EncounterCharacter> encounterCharacterArrayList = new ArrayList<>();
+                            encounterCharacterArrayList.addAll(db.characterDao().getAllEncounterCharacters());
                             index = 0;
                             Random initiativeRoll = new Random();
-                            while(index < encounterCharacters.size()) {
-                                int initiativeValue = initiativeRoll.nextInt(20) +1;
-                                db.characterDao().updateInitiative(encounterCharacters.get(index).getIndex(), initiativeValue);
-                                encounterCharacters.get(index).setInitiative(initiativeValue);
+                            while (index < encounterCharacterArrayList.size()) {
+                                int initiativeValue = initiativeRoll.nextInt(20) + 1;
+                                db.characterDao().updateInitiative(encounterCharacterArrayList.get(index).getIndex(), initiativeValue);
+                                encounterCharacterArrayList.get(index).setInitiative(initiativeValue);
                                 index++;
                             }
-
+                        encounterCharacterList = db.characterDao().initiativeList();
+//                            setIncrementingIndex(encounterCharacterList);
+                            handleInitiative.sendEmptyMessage(0);
                         }
                     };
-                    listView.setAdapter(adapter);
+                    Thread initiativeThread = new Thread(dbUpdateInitiative);
+                    initiativeThread.start();
 
 
                 }
             });
             addCharacterButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-
 
 
                     Intent myIntent = new Intent(EncountersActivity.this, CreateCharacter.class);
@@ -236,38 +296,44 @@ public class EncountersActivity extends AppCompatActivity {
             });
         }
 
-//        else {
-//            savedInstanceState.getIntegerArrayList("encounterCharacter");
-//
-//        }
-//    }
 
 
 
     @Override
     protected void onResume() {
         super.onResume();
+        @SuppressLint("HandlerLeak")
+        final Handler encounterActivityHandler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                adapter = null;
+//                setIncrementingIndex(encounterCharacterList);
+                adapter = new EncounterListAdapter(encounterCharacterList, getApplicationContext(), width);
+                listView.setAdapter(adapter);
+            }
+        };
+
         if(getIntent().hasExtra("index")) {
-            dbQueryThread = new Thread() {
-
+            final int intentIndex = getIntent().getIntExtra("index", 0);
+            getIntent().removeExtra("index");
+            Runnable dbQuery = new Runnable() {
+                @Override
                 public void run() {
-                    db.characterDao().insertAll(new EncounterCharacter(db.characterDao().findCharacterDataByUid(getIntent().getIntExtra("index", 0)).charName, getIntent().getIntExtra("index", 0)));
-
-
-                    adapter = null;
-                    adapter = new EncounterListAdapter(db.characterDao().getAllEncounterCharacters(), getApplicationContext(), width);
-                    listView.setAdapter(adapter);
-                    getIntent().removeExtra("index");
-
+                    int numberOfCharacters = db.characterDao().countCharacters();
+                    db.characterDao().insertAll(new EncounterCharacter(db.characterDao().findCharacterDataByUid(intentIndex).charName, intentIndex, numberOfCharacters+1));
+                    encounterCharacterList = db.characterDao().getAllEncounterCharacters();
+                    encounterActivityHandler.sendEmptyMessage(0);
                 }
             };
-            dbQueryThread.run();
+
+            dbQueryThread = new Thread(dbQuery);
+            dbQueryThread.start();
 
         }
 
             }
     public int getScreenHeight(){
-        //Get display information to set width of views
+
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         return displayMetrics.heightPixels;
@@ -291,6 +357,16 @@ public class EncountersActivity extends AppCompatActivity {
             }
         }
         return firstTime;
+    }
+    public void setIncrementingIndex(List<EncounterCharacter> list){
+        int index = 0;
+
+        while(list.size() > index){
+
+            list.get(index).setIndex(index);
+
+            index++;
+        }
     }
         }
 

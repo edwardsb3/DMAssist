@@ -28,7 +28,7 @@ public interface CharacterDao {
     CharacterData findCharacterDataByUid(int uid);
 
     @Query("SELECT * FROM character WHERE `index` = :index")
-    EncounterCharacter findEncounterCharacterByUid(int index);
+    EncounterCharacter findEncounterCharacterByIndex(int index);
 
     @Query("SELECT * FROM character_data WHERE name LIKE :searchString")
     List<CharacterData> searchforContainedString(String searchString);
@@ -50,6 +50,7 @@ public interface CharacterDao {
 
     @Query("DELETE FROM character")
     void deleteAllEncounterCharacters();
+
     @Insert
     void insertAll(CharacterData... characters_data);
 

@@ -3,6 +3,7 @@ package com.brentonedwards.dmassist.adapter;
 import android.content.Context;
 import android.support.design.widget.Snackbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.brentonedwards.dmassist.EncountersActivity.db;
+import static com.brentonedwards.dmassist.EncountersActivity.encounterCharacterList;
+import static com.brentonedwards.dmassist.EncountersActivity.encounterCharacters;
 
 
 /**
@@ -61,7 +64,7 @@ public class EncounterListAdapter extends ArrayAdapter<EncounterCharacter> imple
 
         int position=(Integer) v.getTag();
         EncounterCharacter selectedCharacter= getItem(position);
- //       int encounterCharacterIndex = index;
+        //       int encounterCharacterIndex = index;
 
 
 
@@ -87,7 +90,7 @@ public class EncounterListAdapter extends ArrayAdapter<EncounterCharacter> imple
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        final EncounterCharacter encounterCharacterIndex = getItem(position);
+        final EncounterCharacter selectedEncounterCharacter = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         final ViewHolder viewHolder; // view lookup cache stored in tag
 
@@ -103,33 +106,33 @@ public class EncounterListAdapter extends ArrayAdapter<EncounterCharacter> imple
             viewHolder.hitPointsTextView = convertView.findViewById(R.id.hit_points);
             viewHolder.initiativeTextView = convertView.findViewById(R.id.initiative);
             viewHolder.armorClassImageView = convertView.findViewById(R.id.armor_class_image);
-            viewHolder.nameTextView.setWidth(width/2);
-            result=convertView;
+            viewHolder.nameTextView.setWidth(width / 2);
+            result = convertView;
 
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
-            result=convertView;
+            result = convertView;
         }
 
         Animation animation = AnimationUtils.loadAnimation(mContext, (position > lastPosition) ? R.anim.up_from_bottom : R.anim.down_from_top);
         result.startAnimation(animation);
         lastPosition = position;
+        Log.d("myAlert", String.valueOf(selectedEncounterCharacter.isPlayerCharacter()));
 
-
-
-        Thread dbQueryThread = new Thread() {
-
-            public void run() {
-                viewHolder.nameTextView.setText(db.characterDao().findCharacterDataByUid(encounterCharacterIndex.getCharacterSheetIndex()).getCharName());
-                viewHolder.armorClassTextView.setText(String.valueOf(db.characterDao().findCharacterDataByUid(encounterCharacterIndex.getCharacterSheetIndex()).getArmorClass()));
-                viewHolder.hitPointsTextView.setText(String.valueOf(db.characterDao().findCharacterDataByUid(encounterCharacterIndex.getCharacterSheetIndex()).getHitPoints()));
-                viewHolder.initiativeTextView.setText(String.valueOf(db.characterDao().findEncounterCharacterByUid(encounterCharacterIndex.getIndex()).getInitiative()));
-
-
-            }
-        };
-        dbQueryThread.run();
+//        if (selectedEncounterCharacter.isPlayerCharacter() == true) {
+//            viewHolder.nameTextView.setText(EncountersActivity.nonPlayerCreatedMonstersList.get(selectedEncounterCharacter.getListIndex()).getCharName());
+//            viewHolder.armorClassTextView.setText(String.valueOf(EncountersActivity.nonPlayerCreatedMonstersList.get(selectedEncounterCharacter.getCharacterSheetIndex()-1).getArmorClass()));
+//            viewHolder.hitPointsTextView.setText(String.valueOf(EncountersActivity.nonPlayerCreatedMonstersList.get(selectedEncounterCharacter.getCharacterSheetIndex()-1).getHitPoints()));
+//            viewHolder.initiativeTextView.setText(String.valueOf(EncountersActivity.encounterCharacterList.get(selectedEncounterCharacter.getListIndex()).getInitiative()));
+//        }
+//
+//                else {
+            viewHolder.nameTextView.setText(EncountersActivity.nonPlayerCreatedMonstersList.get(selectedEncounterCharacter.getCharacterSheetIndex()-1).getCharName());
+            viewHolder.armorClassTextView.setText(String.valueOf(EncountersActivity.nonPlayerCreatedMonstersList.get(selectedEncounterCharacter.getCharacterSheetIndex()-1).getArmorClass()));
+            viewHolder.hitPointsTextView.setText(String.valueOf(EncountersActivity.nonPlayerCreatedMonstersList.get(selectedEncounterCharacter.getCharacterSheetIndex()-1).getHitPoints()));
+            viewHolder.initiativeTextView.setText(String.valueOf(EncountersActivity.encounterCharacterList.get(selectedEncounterCharacter.getListIndex()).getInitiative()));
+//        }
         // Return the completed view to render on screen
         return convertView;
     }

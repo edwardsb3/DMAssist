@@ -1,6 +1,9 @@
 package com.brentonedwards.dmassist;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 
@@ -60,6 +63,7 @@ public class CharacterDetailActivity extends AppCompatActivity {
     StringBuilder actionTextBuilder;
     String actionText = "";
     String abilityText = "";
+    CharacterData selectedChar;
     public int width;
     int itemSelected;
     int index = 0;
@@ -87,14 +91,10 @@ public class CharacterDetailActivity extends AppCompatActivity {
         languages = rootView.findViewById(R.id.languages);
 
 
-        /*
-         * TextViews with character data
-         */
-        dbQueryThread = new Thread() {
+        @SuppressLint("HandlerLeak") final Handler characterDetailHandler = new Handler(){
 
-            public void run() {
-
-                CharacterData selectedChar = EncountersActivity.db.characterDao().findCharacterDataByUid(itemSelected);
+            @Override
+            public void handleMessage(Message msg) {
 
                 charNameTextView = rootView.findViewById(R.id.character_name);
                 charNameTextView.setText(selectedChar.getCharName());
@@ -163,31 +163,49 @@ public class CharacterDetailActivity extends AppCompatActivity {
 
                 actionValTextView.setText(buildActionString(selectedChar));
 
+                width = getScreenWidth();
+
+
+                challengeRating.setWidth(width / 2);
+                challengeRatingValTextView.setWidth(width / 2);
+                languages.setWidth(width / 2);
+                languagesValTextView.setWidth(width / 2);
+                senses.setWidth(width / 2);
+                sensesValTextView.setWidth(width / 2);
+                damageImmunitiesValTextView.setWidth(width / 2);
+                damageImmunities.setWidth(width / 2);
+                conditionalImmunities.setWidth(width / 2);
+                conditionalImmunitiesValTextView.setWidth(width / 2);
+
+                statBlockViews = Arrays.asList(statBlockStr, statBlockDex, statBlockCon, statBlockInt, statBlockWis, statBlockCha);
+                setEvenWidth(statBlockViews, width);
+                statBlockViews = Arrays.asList(statBlockStrValTextView, statBlockDexValTextView, statBlockConValTextView, statBlockIntValTextView, statBlockWisValTextView, statBlockChaValTextView);
+                setEvenWidth(statBlockViews, width);
 
             }
         };
-        dbQueryThread.run();
+
+        /*
+         * TextViews with character data
+         */
+        Runnable dbQuery = new Runnable(){
+            @Override
+            public void run() {
+                selectedChar = EncountersActivity.db.characterDao().findCharacterDataByUid(itemSelected);
+                characterDetailHandler.sendEmptyMessage(0);
+            }
 
 
 
-        width = getScreenWidth();
+
+            };
+        Thread dbQueryThread = new Thread(dbQuery);
+        dbQueryThread.start();
 
 
-        challengeRating.setWidth(width / 2);
-        challengeRatingValTextView.setWidth(width / 2);
-        languages.setWidth(width / 2);
-        languagesValTextView.setWidth(width / 2);
-        senses.setWidth(width / 2);
-        sensesValTextView.setWidth(width / 2);
-        damageImmunitiesValTextView.setWidth(width / 2);
-        damageImmunities.setWidth(width / 2);
-        conditionalImmunities.setWidth(width / 2);
-        conditionalImmunitiesValTextView.setWidth(width / 2);
 
-        statBlockViews = Arrays.asList(statBlockStr, statBlockDex, statBlockCon, statBlockInt, statBlockWis, statBlockCha);
-        setEvenWidth(statBlockViews, width);
-        statBlockViews = Arrays.asList(statBlockStrValTextView, statBlockDexValTextView, statBlockConValTextView, statBlockIntValTextView, statBlockWisValTextView, statBlockChaValTextView);
-        setEvenWidth(statBlockViews, width);
+
+
 
         addButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

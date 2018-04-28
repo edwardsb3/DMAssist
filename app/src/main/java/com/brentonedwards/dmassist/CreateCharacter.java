@@ -1,9 +1,13 @@
 package com.brentonedwards.dmassist;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -100,29 +104,52 @@ public class CreateCharacter extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                EncounterCharacter character = new EncounterCharacter();
-                character.setName(String.valueOf(characterNameEditText.getText()));
-                character.setArmorClass(Integer.valueOf(armorClassEditText.getText().toString()));
-                character.setCharacterSheetIndex(db.characterDao().countCharacterData()+1);
-                db.characterDao().insertAll(character);
+                @SuppressLint("HandlerLeak") final Handler handle = new Handler(){
 
-                CharacterData characterData = new CharacterData();
+                    @Override
+                    public void handleMessage(Message msg) {
+                        Intent myIntent = new Intent(CreateCharacter.this, EncountersActivity.class);
+                        startActivity(myIntent);
+                    }
+                };
 
-                characterData.setCharName(characterNameEditText.getText().toString());
-                characterData.setStrength(Integer.valueOf(statBlockStrValEditText.getText().toString()));
-                characterData.setDexterity(Integer.valueOf(statBlockDexValEditText.getText().toString()));
-                characterData.setConstitution(Integer.valueOf(statBlockConValEditText.getText().toString()));
-                characterData.setIntelligence(Integer.valueOf(statBlockIntValEditText.getText().toString()));
-                characterData.setWisdom(Integer.valueOf(statBlockWisValEditText.getText().toString()));
-                characterData.setCharisma(Integer.valueOf(statBlockChaValEditText.getText().toString()));
+                Runnable makeNewCharacter = new Runnable() {
 
-
-                db.characterDao().insertAll(characterData);
+                    @Override
+                    public void run() {
 
 
 
-                Intent myIntent = new Intent(CreateCharacter.this, EncountersActivity.class);
-                startActivity(myIntent);
+//                        CharacterData characterData = new CharacterData();
+//
+//                        characterData.setCharName(characterNameEditText.getText().toString());
+//                        characterData.setStrength(Integer.valueOf(statBlockStrValEditText.getText().toString()));
+//                        characterData.setDexterity(Integer.valueOf(statBlockDexValEditText.getText().toString()));
+//                        characterData.setConstitution(Integer.valueOf(statBlockConValEditText.getText().toString()));
+//                        characterData.setIntelligence(Integer.valueOf(statBlockIntValEditText.getText().toString()));
+//                        characterData.setWisdom(Integer.valueOf(statBlockWisValEditText.getText().toString()));
+//                        characterData.setCharisma(Integer.valueOf(statBlockChaValEditText.getText().toString()));
+                        db.characterDao().insertAll(new CharacterData(characterNameEditText.getText().toString(), "Medium", "Humanoid", "Undefined", "Neutral", armorClassEditText.getInputType(), healthEditText.getInputType(), "Undefined", charSpeedTextView.getText().toString(), statBlockStrValEditText.getInputType(), statBlockDexValEditText.getInputType(), statBlockConValEditText.getInputType(), statBlockWisValEditText.getInputType(), statBlockIntValEditText.getInputType(), statBlockWisValEditText.getInputType(), null, null, null, null, null, 0, "Undefined", null, null));
+
+
+//                        EncounterCharacter character = new EncounterCharacter();
+//                        character.setListIndex(db.characterDao().countCharacters() + 1);
+//                        character.setName(String.valueOf(characterNameEditText.getText()));
+//                        character.setArmorClass(Integer.valueOf(armorClassEditText.getText().toString()));
+//                        character.setCharacterSheetIndex(db.characterDao().countCharacterData() + 1);
+//                        character.isPlayerCharacter = true;
+                        CharacterData newCharData = db.characterDao().findCharacterDataByUid(db.characterDao().countCharacterData());
+                        db.characterDao().insertAll(new EncounterCharacter(newCharData.charName, db.characterDao().countCharacterData(), db.characterDao().countCharacters()));
+
+
+                        handle.sendEmptyMessage(0);
+                    }
+                };
+
+                Thread dbUpdateThread = new Thread(makeNewCharacter);
+                dbUpdateThread.start();
+
+
 
 
             }

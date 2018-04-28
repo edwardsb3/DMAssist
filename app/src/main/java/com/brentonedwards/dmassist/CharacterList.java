@@ -31,9 +31,10 @@ public class CharacterList extends AppCompatActivity {
 
     public static Handler characterListHandler;
     EditText searchBar;
+    public List<CharacterData> searchResult;
     ListView characterListView;
     View root;
-    ArrayList<EncounterCharacter> searchResult = new ArrayList<>();
+    Handler searchHandler;
     private static CharacterListAdapter adapter;
     Thread dbQueryThread = new Thread();
     List<CharacterData> nonPlayerCreatedList = EncountersActivity.nonPlayerCreatedMonstersList;
@@ -50,6 +51,7 @@ public class CharacterList extends AppCompatActivity {
         searchBar = findViewById(R.id.search_bar);
         characterListView = findViewById(R.id.list);
 
+
         if(nonPlayerCreatedList != null) {
             adapter = new CharacterListAdapter(EncountersActivity.nonPlayerCreatedMonstersList, getApplicationContext());
             characterListView.setAdapter(adapter);
@@ -63,6 +65,18 @@ public class CharacterList extends AppCompatActivity {
             }
         };
 
+        searchHandler = new Handler(){
+
+            @Override
+            public void handleMessage(Message msg) {
+
+                if(searchResult != null) {
+                    characterListView.setAdapter(new CharacterListAdapter(searchResult, getApplicationContext()));
+                }
+                else{searchBar.setText("Not found, try again.");}
+            }
+        };
+
 
 
 
@@ -70,17 +84,21 @@ public class CharacterList extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
 
-                    dbQueryThread = new Thread() {
+                   Runnable dbQuery = new Runnable() {
+                       @Override
+                       public void run() {
 
-                        public void run() {
-                            adapter = null;
-                            characterListView.setAdapter(new CharacterListAdapter(db.characterDao().searchforContainedString(searchBar.getText().toString()+"%"), root.getContext()));
+                           adapter = null;
+                           searchResult = db.characterDao().searchforContainedString(searchBar.getText().toString()+"%");
+                           //searchResult = new CharacterListAdapter(db.characterDao().searchforContainedString(searchBar.getText().toString()+"%"), root.getContext());
 
+                           searchHandler.sendEmptyMessage(0);
+                       }
+                   };
 
+                    dbQueryThread = new Thread(dbQuery);
 
-                        }
-                    };
-                    dbQueryThread.run();
+                    dbQueryThread.start();
 
                 }
                 return false;
