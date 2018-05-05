@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -66,6 +67,7 @@ public class CharacterDetailActivity extends AppCompatActivity {
     CharacterData selectedChar;
     public int width;
     int itemSelected;
+    int encounterItemSelected;
     int index = 0;
     Thread dbQueryThread;
 
@@ -78,6 +80,13 @@ public class CharacterDetailActivity extends AppCompatActivity {
         rootView.setBackgroundColor(getResources().getColor(R.color.colorBackground));
         addButton = findViewById(R.id.fab);
         itemSelected = getIntent().getIntExtra("Value", 0);
+        encounterItemSelected = getIntent().getIntExtra("encounterValue", 0);
+        getIntent().removeExtra("Value");
+        if (getIntent().hasExtra("encounterValue")) {
+
+            addButton.hide();
+        }
+        getIntent().removeExtra("encounterValue");
         statBlockStr = rootView.findViewById(R.id.stat_str);
         statBlockDex = rootView.findViewById(R.id.stat_dex);
         statBlockCon = rootView.findViewById(R.id.stat_con);
@@ -89,6 +98,8 @@ public class CharacterDetailActivity extends AppCompatActivity {
         senses = rootView.findViewById(R.id.senses);
         challengeRating = rootView.findViewById(R.id.challenge_rating);
         languages = rootView.findViewById(R.id.languages);
+
+
 
 
         @SuppressLint("HandlerLeak") final Handler characterDetailHandler = new Handler(){
@@ -191,8 +202,26 @@ public class CharacterDetailActivity extends AppCompatActivity {
         Runnable dbQuery = new Runnable(){
             @Override
             public void run() {
-                selectedChar = EncountersActivity.db.characterDao().findCharacterDataByUid(itemSelected);
-                characterDetailHandler.sendEmptyMessage(0);
+                if(encounterItemSelected<itemSelected) {
+                    selectedChar = EncountersActivity.db.characterDao().findCharacterDataByUid(itemSelected);
+                    characterDetailHandler.sendEmptyMessage(0);
+                }
+                else{
+                    Log.d("sheetIndex", String.valueOf(encounterItemSelected));
+
+//                    if(encounterItemSelected<325) {
+                        List<EncounterCharacter> initList = db.characterDao().initiativeList();
+                        String charName = initList.get(encounterItemSelected).getName();
+//                        String charName = EncountersActivity.db.characterDao().findEncounterCharacterByIndex(encounterItemSelected+1).getName();
+                        selectedChar = EncountersActivity.db.characterDao().findByName(charName);
+                        characterDetailHandler.sendEmptyMessage(0);
+//                    }
+//                    else {
+//                        int sheetIndex = EncountersActivity.db.characterDao().findEncounterCharacterByIndex(encounterItemSelected + 1).getCharacterSheetIndex();
+//                        selectedChar = EncountersActivity.db.characterDao().findCharacterDataByUid(sheetIndex);
+//                        characterDetailHandler.sendEmptyMessage(0);
+////                    }
+                    }
             }
 
 

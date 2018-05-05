@@ -23,6 +23,7 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Handler;
 
 import static com.brentonedwards.dmassist.EncountersActivity.db;
 import static com.brentonedwards.dmassist.EncountersActivity.encounterCharacterList;
@@ -118,23 +119,26 @@ public class EncounterListAdapter extends ArrayAdapter<EncounterCharacter> imple
         Animation animation = AnimationUtils.loadAnimation(mContext, (position > lastPosition) ? R.anim.up_from_bottom : R.anim.down_from_top);
         result.startAnimation(animation);
         lastPosition = position;
-        Log.d("myAlert", String.valueOf(selectedEncounterCharacter.isPlayerCharacter()));
 
-//        if (selectedEncounterCharacter.isPlayerCharacter() == true) {
-//            viewHolder.nameTextView.setText(EncountersActivity.nonPlayerCreatedMonstersList.get(selectedEncounterCharacter.getListIndex()).getCharName());
-//            viewHolder.armorClassTextView.setText(String.valueOf(EncountersActivity.nonPlayerCreatedMonstersList.get(selectedEncounterCharacter.getCharacterSheetIndex()-1).getArmorClass()));
-//            viewHolder.hitPointsTextView.setText(String.valueOf(EncountersActivity.nonPlayerCreatedMonstersList.get(selectedEncounterCharacter.getCharacterSheetIndex()-1).getHitPoints()));
-//            viewHolder.initiativeTextView.setText(String.valueOf(EncountersActivity.encounterCharacterList.get(selectedEncounterCharacter.getListIndex()).getInitiative()));
-//        }
-//
-//                else {
-            viewHolder.nameTextView.setText(EncountersActivity.nonPlayerCreatedMonstersList.get(selectedEncounterCharacter.getCharacterSheetIndex()-1).getCharName());
-            viewHolder.armorClassTextView.setText(String.valueOf(EncountersActivity.nonPlayerCreatedMonstersList.get(selectedEncounterCharacter.getCharacterSheetIndex()-1).getArmorClass()));
-            viewHolder.hitPointsTextView.setText(String.valueOf(EncountersActivity.nonPlayerCreatedMonstersList.get(selectedEncounterCharacter.getCharacterSheetIndex()-1).getHitPoints()));
-            viewHolder.initiativeTextView.setText(String.valueOf(EncountersActivity.encounterCharacterList.get(selectedEncounterCharacter.getListIndex()).getInitiative()));
-//        }
-        // Return the completed view to render on screen
+            viewHolder.nameTextView.setText(selectedEncounterCharacter.getName());
+            viewHolder.armorClassTextView.setText(String.valueOf(selectedEncounterCharacter.getArmorClass()));
+            viewHolder.hitPointsTextView.setText(String.valueOf(selectedEncounterCharacter.getHealth()));
+                viewHolder.initiativeTextView.setText(String.valueOf(selectedEncounterCharacter.getInitiative()));
+            Log.d("createCell", selectedEncounterCharacter.getName());
+
+
         return convertView;
+    }
+
+    public void setIncrementingIndex(List<EncounterCharacter> list){
+        int index = 1;
+
+        while(list.size() > index){
+
+            list.get(index).setIndex(index);
+
+            index++;
+        }
     }
 
 }

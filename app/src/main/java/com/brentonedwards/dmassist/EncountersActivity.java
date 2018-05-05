@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -165,6 +166,12 @@ public class EncountersActivity extends AppCompatActivity {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     final int itemSelected = position;
 
+                    Intent myIntent = new Intent(EncountersActivity.this, CharacterDetailActivity.class);
+
+                    myIntent.putExtra("encounterValue", position);
+
+                    EncountersActivity.this.startActivity(myIntent);
+
 
                     @SuppressLint("HandlerLeak") final Handler detailHandler = new Handler(){
 
@@ -172,35 +179,31 @@ public class EncountersActivity extends AppCompatActivity {
                         public void handleMessage(Message msg) {
                             Intent myIntent= new Intent();
 
-                            //is not player
-                            if(msg.arg1 == 0) {
-                                myIntent = new Intent(EncountersActivity.this, CharacterDetailActivity.class);
-                                }
-                                //is player
-                            if(msg.arg1 == 1) {
-                                myIntent = new Intent(EncountersActivity.this, CreateCharacter.class);
-                            }
+
+
+
 
                             EncountersActivity.this.startActivity(myIntent);
 
 
                         }
                     };
-
-
-                    Runnable dbNavigationQuery = new Runnable() {
-
-                        public void run() {
-                            Message isPlayer = new Message();
-
-                            EncounterCharacter selectedCharacter = db.characterDao().findEncounterCharacterByIndex(itemSelected);
-                            if(selectedCharacter.isPlayerCharacter){isPlayer.arg1 = 1;}
-                            else{isPlayer.arg1 = 0;}
-                        detailHandler.sendEmptyMessage(0);
-                        }
-                    };
-                    Thread dbNavQueryThread = new Thread(dbNavigationQuery);
-                    dbNavQueryThread.run();
+//
+//                    Runnable dbNavigationQuery = new Runnable() {
+//
+//                        public void run() {
+//                            Message isPlayer = new Message();
+//
+//                            EncounterCharacter selectedCharacter = db.characterDao().findEncounterCharacterByIndex(itemSelected);
+////                            if(selectedCharacter.isPlayerCharacter){isPlayer.arg1 = 1;}
+////                            else{isPlayer.arg1 = 0;}
+//
+//
+//                        detailHandler.sendEmptyMessage(0);
+//                        }
+//                    };
+//                    Thread dbNavQueryThread = new Thread(dbNavigationQuery);
+//                    dbNavQueryThread.start();
 
 
                 }
@@ -253,8 +256,6 @@ public class EncountersActivity extends AppCompatActivity {
                         @Override
                         public void handleMessage(Message msg) {
 
-                            adapter = null;
-                            adapter = new EncounterListAdapter(encounterCharacterList, getApplicationContext(), getScreenWidth());
                             listView.setAdapter(adapter);
                         }
                     };
@@ -264,17 +265,23 @@ public class EncountersActivity extends AppCompatActivity {
                         public void run() {
 
 
-                            ArrayList<EncounterCharacter> encounterCharacterArrayList = new ArrayList<>();
-                            encounterCharacterArrayList.addAll(db.characterDao().getAllEncounterCharacters());
+                            List<EncounterCharacter> encounterCharacterList = db.characterDao().getAllEncounterCharacters();
+
                             index = 0;
-                            Random initiativeRoll = new Random();
-                            while (index < encounterCharacterArrayList.size()) {
-                                int initiativeValue = initiativeRoll.nextInt(20) + 1;
-                                db.characterDao().updateInitiative(encounterCharacterArrayList.get(index).getIndex(), initiativeValue);
-                                encounterCharacterArrayList.get(index).setInitiative(initiativeValue);
+                            while (index < encounterCharacterList.size()) {
+//                                int initiativeValue = initiativeRoll.nextInt(20) + 1;
+                                int dexMod = (db.characterDao().findCharacterDataByUid(encounterCharacterList.get(index).getCharacterSheetIndex()).getDexterity()-10)/2;
+                                encounterCharacterList.get(index).setInitiative((new Random().nextInt(100)/5)+1+ dexMod);
+                                db.characterDao().updateInitiative(encounterCharacterList.get(index).getIndex(), encounterCharacterList.get(index).getInitiative());
+
+                            Log.d("dexMod", String.valueOf(dexMod));
                                 index++;
                             }
+
                         encounterCharacterList = db.characterDao().initiativeList();
+                            adapter = null;
+                            adapter = new EncounterListAdapter(encounterCharacterList, getApplicationContext(), getScreenWidth());
+
 //                            setIncrementingIndex(encounterCharacterList);
                             handleInitiative.sendEmptyMessage(0);
                         }
@@ -319,8 +326,8 @@ public class EncountersActivity extends AppCompatActivity {
             Runnable dbQuery = new Runnable() {
                 @Override
                 public void run() {
-                    int numberOfCharacters = db.characterDao().countCharacters();
-                    db.characterDao().insertAll(new EncounterCharacter(db.characterDao().findCharacterDataByUid(intentIndex).charName, intentIndex, numberOfCharacters+1));
+                    CharacterData charData = db.characterDao().findCharacterDataByUid(intentIndex);
+                    db.characterDao().insertAll(new EncounterCharacter(charData.charName, intentIndex, charData.armorClass, charData.hitPoints));
                     encounterCharacterList = db.characterDao().getAllEncounterCharacters();
                     encounterActivityHandler.sendEmptyMessage(0);
                 }
@@ -359,7 +366,7 @@ public class EncountersActivity extends AppCompatActivity {
         return firstTime;
     }
     public void setIncrementingIndex(List<EncounterCharacter> list){
-        int index = 0;
+        int index = 1;
 
         while(list.size() > index){
 

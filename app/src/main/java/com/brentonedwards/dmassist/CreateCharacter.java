@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
@@ -129,7 +130,7 @@ public class CreateCharacter extends AppCompatActivity {
 //                        characterData.setIntelligence(Integer.valueOf(statBlockIntValEditText.getText().toString()));
 //                        characterData.setWisdom(Integer.valueOf(statBlockWisValEditText.getText().toString()));
 //                        characterData.setCharisma(Integer.valueOf(statBlockChaValEditText.getText().toString()));
-                        db.characterDao().insertAll(new CharacterData(characterNameEditText.getText().toString(), "Medium", "Humanoid", "Undefined", "Neutral", armorClassEditText.getInputType(), healthEditText.getInputType(), "Undefined", charSpeedTextView.getText().toString(), statBlockStrValEditText.getInputType(), statBlockDexValEditText.getInputType(), statBlockConValEditText.getInputType(), statBlockWisValEditText.getInputType(), statBlockIntValEditText.getInputType(), statBlockWisValEditText.getInputType(), null, null, null, null, null, 0, "Undefined", null, null));
+                        db.characterDao().insertAll(new CharacterData(characterNameEditText.getText().toString(), "Medium", "Humanoid", "Undefined", "Neutral", Integer.valueOf(armorClassEditText.getText().toString()), Integer.valueOf(healthEditText.getText().toString()), "Undefined", charSpeedTextView.getText().toString(), Integer.valueOf(statBlockStrValEditText.getText().toString()), Integer.valueOf(statBlockDexValEditText.getText().toString()), Integer.valueOf(statBlockConValEditText.getText().toString()), Integer.valueOf(statBlockWisValEditText.getText().toString()), Integer.valueOf(statBlockIntValEditText.getText().toString()), Integer.valueOf(statBlockWisValEditText.getText().toString()), null, null, null, null, null, 0, "Undefined", null, null));
 
 
 //                        EncounterCharacter character = new EncounterCharacter();
@@ -139,7 +140,7 @@ public class CreateCharacter extends AppCompatActivity {
 //                        character.setCharacterSheetIndex(db.characterDao().countCharacterData() + 1);
 //                        character.isPlayerCharacter = true;
                         CharacterData newCharData = db.characterDao().findCharacterDataByUid(db.characterDao().countCharacterData());
-                        db.characterDao().insertAll(new EncounterCharacter(newCharData.charName, db.characterDao().countCharacterData(), db.characterDao().countCharacters()));
+                        db.characterDao().insertAll(new EncounterCharacter(newCharData.charName, db.characterDao().countCharacterData(), newCharData.armorClass, newCharData.hitPoints));
 
 
                         handle.sendEmptyMessage(0);

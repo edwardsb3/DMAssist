@@ -11,9 +11,6 @@ public class EncounterCharacter {
     @PrimaryKey(autoGenerate = true)
     int index;
 
-    @ColumnInfo(name = "listIndex")
-    int listIndex;
-
     @ColumnInfo(name = "name")
     String name;
 
@@ -60,7 +57,7 @@ public class EncounterCharacter {
     @Ignore
     public EncounterCharacter() {
 
-        this.listIndex = 0;
+
         this.isPlayerCharacter = true;
         this.name = "Bilmy";
         this.health = 100;
@@ -81,13 +78,13 @@ public class EncounterCharacter {
         this.stunned = false;
     }
 
-    public EncounterCharacter(String name, int characterSheetIndex, int listIndex) {
+    public EncounterCharacter(String name, int characterSheetIndex, int armorClass, int health) {
 
         this.isPlayerCharacter = false;
         this.name = name;
-        this.health = 100;
+        this.health = health;
         this.characterSheetIndex = characterSheetIndex;
-        this.armorClass = 10;
+        this.armorClass = armorClass;
         this.initiative =0;
         this.blinded = false;
         this.charmed = false;
@@ -110,13 +107,6 @@ public class EncounterCharacter {
     }
 
 
-    public int getListIndex() {
-        return listIndex;
-    }
-
-    public void setListIndex(int listIndex) {
-        this.listIndex = listIndex;
-    }
 
     public int getIndex() {
         return index;

@@ -27,7 +27,7 @@
                 android:hint= "Your Character Name"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:maxLines="1"
-                android:imeOptions="actionDone"
+                android:imeOptions="actionNext"
                 android:inputType="text"
                 />
 

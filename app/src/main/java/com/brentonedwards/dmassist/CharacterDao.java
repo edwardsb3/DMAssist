@@ -21,8 +21,9 @@ public interface CharacterDao {
     @Query("SELECT * FROM character_data")
     List<CharacterData> getAllCharacterData();
 
-    @Query("SELECT * FROM character where name = :name")
-    EncounterCharacter findByName(String name);
+
+    @Query("SELECT * FROM character_data where name = :name")
+    CharacterData findByName(String name);
 
     @Query("SELECT * FROM character_data WHERE uid = :uid")
     CharacterData findCharacterDataByUid(int uid);
@@ -50,6 +51,8 @@ public interface CharacterDao {
 
     @Query("DELETE FROM character")
     void deleteAllEncounterCharacters();
+
+
 
     @Insert
     void insertAll(CharacterData... characters_data);
